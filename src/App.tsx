@@ -10,6 +10,13 @@ import AssignedHospital from './pages/doctor_pages/AssignedHospital'
 import RoomAllocation from './pages/doctor_pages/RoomAllocation'
 import PatientAppointment from './pages/doctor_pages/PatientAppointment'
 import DocDashboard from './pages/doctor_pages/DocDashboard'
+import HMDashboard from './pages/healthcare_manager_pages/HMDashboard.tsx'
+import AllWard from './pages/healthcare_manager_pages/AllWard.tsx'
+import AllLabTech from './pages/healthcare_manager_pages/AllLabTech.tsx'
+import AllReceptionist from './pages/healthcare_manager_pages/AllReceptionist.tsx'
+import AllWardRooms from './pages/healthcare_manager_pages/AllWardRooms.tsx'
+import AllLabRooms from './pages/healthcare_manager_pages/AllLabRooms.tsx'
+import ManageOperations from './pages/healthcare_manager_pages/ManageOperations.tsx'
 
 function App() {
 
@@ -33,6 +40,15 @@ function App() {
         <Route path='/room-allocation' element={<RoomAllocation />} />
         <Route path='/patient-appointment' element={<PatientAppointment />} />
 
+        {/* Healthcare Manager Routes */}
+        <Route path='/hcm-dashboard' element={<HMDashboard />} />
+        <Route path='/all-wardinfo' element={<AllWard />} />
+        <Route path='/add-labinfo' element={<AllLabTech />} />
+        <Route path='/all-receptionistinfo' element={<AllReceptionist />} />
+        <Route path='/all-wardroomsinfo' element={<AllWardRooms />} />
+        <Route path='/all-labroomsinfo' element={<AllLabRooms />} />
+        <Route path='/all-operations' element={<ManageOperations />} />
+        
       </Routes>
     </Router>
   )
