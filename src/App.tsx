@@ -4,7 +4,9 @@ import LoginSignup from './pages/PatientLogin'
 import Dashboard from './pages/PatientDashboard'
 import AdminLogin from './pages/AdminLogins'
 import AddHospital from './pages/ministry_pages/AddHospital.tsx'
+import ManageHospitals from "./pages/ministry_pages/ManageHospitals.tsx";
 import AddDoctor from './pages/ministry_pages/AddDoctor.tsx'
+import ManageDoctors from "./pages/ministry_pages/ManageDoctors.tsx";
 import LabManage from './pages/lab_tech_pages/LabManage'
 import AssignedHospital from './pages/doctor_pages/AssignedHospital'
 import RoomAllocation from './pages/doctor_pages/RoomAllocation'
@@ -22,7 +24,9 @@ function App() {
 
         {/* Ministry Routes */}
         <Route path='/add-hospital' element={<AddHospital />} />
+        <Route path='/manage-hospitals' element={<ManageHospitals />} />
         <Route path='/add-doctor' element={<AddDoctor />} />
+        <Route path='/manage-doctors' element={<ManageDoctors />} />
 
         {/* Lab Tech Routes */}
         <Route path='/lab-manage' element={<LabManage />} />
