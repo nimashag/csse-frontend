@@ -1,23 +1,44 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import MinistrySidebar from '../MinistrySidebar.tsx';
 import config from "../../../constants/config";
 
-const AddDoctor: React.FC = () => {
+const UpdateDoctor: React.FC = () => {
+    const { id } = useParams();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: ''
     });
 
     const [errors, setErrors] = useState({
         name: '',
         email: '',
-        password: ''
     });
 
     const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
     const navigate = useNavigate();
+
+    // Fetch doctor data to populate form
+    useEffect(() => {
+        const fetchDoctor = async () => {
+            try {
+                const response = await fetch(`${config.backend_url}/api/users/${id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setFormData({
+                        name: data.name,
+                        email: data.email,
+                    });
+                } else {
+                    throw new Error('Failed to fetch doctor data');
+                }
+            } catch (error) {
+                console.error('Error fetching doctor:', error);
+            }
+        };
+
+        if (id) fetchDoctor();
+    }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -42,8 +63,6 @@ const AddDoctor: React.FC = () => {
             } else if (!/\S+@\S+\.\S+/.test(value)) {
                 error = 'Invalid email format';
             }
-        } else if (name === 'password' && !value) {
-            error = 'Password is required';
         }
 
         return error;
@@ -77,15 +96,14 @@ const AddDoctor: React.FC = () => {
         if (!valid) return; // Prevent submission if validation fails
 
         try {
-            const response = await fetch(`${config.backend_url}/api/users/`, {
-                method: 'POST',
+            const response = await fetch(`${config.backend_url}/api/users/${id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password,
                     userType: 'DOCTOR',
                 }),
             });
@@ -93,17 +111,17 @@ const AddDoctor: React.FC = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Success:', data);
-                setNotification({ message: 'Doctor added successfully!', type: 'success' });
+                setNotification({ message: 'Doctor updated successfully!', type: 'success' });
                 setTimeout(() => {
                     setNotification(null);
                     navigate('/manage-doctors');
                 }, 5000);
             } else {
-                throw new Error('Failed to add doctor');
+                throw new Error('Failed to update doctor');
             }
         } catch (error) {
             console.error('Error:', error);
-            setNotification({ message: 'Failed to add doctor. Please try again later.', type: 'error' });
+            setNotification({ message: 'Failed to update doctor. Please try again later.', type: 'error' });
             setTimeout(() => {
                 setNotification(null);
             }, 5000);
@@ -120,7 +138,7 @@ const AddDoctor: React.FC = () => {
             <main className="main-content">
                 <header className="header">
                     <div className="header-left">
-                        <h2 className="text-3xl font-semibold">Add Doctor</h2>
+                        <h2 className="text-3xl font-semibold">Update Doctor</h2>
                     </div>
                 </header>
 
@@ -166,21 +184,6 @@ const AddDoctor: React.FC = () => {
                                 />
                                 {errors.email && <span className="text-red-500">{errors.email}</span>}
                             </div>
-
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    className={`form-input ${errors.password ? 'border-red-500' : ''}`}
-                                    placeholder="Enter Password"
-                                    required
-                                />
-                                {errors.password && <span className="text-red-500">{errors.password}</span>}
-                            </div>
                         </div>
 
                         <div className="form-actions mt-6 flex justify-end gap-4">
@@ -188,7 +191,7 @@ const AddDoctor: React.FC = () => {
                                 Cancel
                             </button>
                             <button type="submit" className="btn-submit">
-                                Submit
+                                Update
                             </button>
                         </div>
                     </form>
@@ -198,4 +201,4 @@ const AddDoctor: React.FC = () => {
     );
 };
 
-export default AddDoctor;
+export default UpdateDoctor;

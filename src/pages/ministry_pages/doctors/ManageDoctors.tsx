@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MinistrySidebar from '../MinistrySidebar.tsx';
 import { FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import config from "../../../constants/config";
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 interface Doctor {
     id: string;
@@ -16,6 +17,10 @@ const ManageDoctors: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [doctorsPerPage] = useState(10);
     const [totalDoctors, setTotalDoctors] = useState(0);
+    const [deleteDoctorId, setDeleteDoctorId] = useState<string | null>(null); // State to store doctor ID to delete
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // State to show/hide the modal
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDoctors = async () => {
@@ -28,15 +33,20 @@ const ManageDoctors: React.FC = () => {
         fetchDoctors();
     }, []);
 
-    const handleDelete = async (id: string) => {
-        const confirmed = window.confirm('Are you sure you want to delete this doctor?');
-        if (confirmed) {
+    const confirmDelete = (doctorId: string) => {
+        setDeleteDoctorId(doctorId);  // Set the doctor ID for deletion
+        setShowDeleteModal(true);  // Show the confirmation modal
+    };
+
+    const handleDelete = async () => {
+        if (deleteDoctorId) {
             try {
-                const response = await fetch(`${config.backend_url}/api/users/${id}`, {
+                const response = await fetch(`${config.backend_url}/api/users/${deleteDoctorId}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
-                    setDoctors(doctors.filter(doctor => doctor.id !== id));
+                    setDoctors(doctors.filter(doctor => doctor.id !== deleteDoctorId));
+                    setShowDeleteModal(false);  // Close the modal after deletion
                 } else {
                     alert('Failed to delete doctor.');
                 }
@@ -46,31 +56,28 @@ const ManageDoctors: React.FC = () => {
         }
     };
 
-    // Get current doctors for the current page
+    const handleCloseModal = () => {
+        setShowDeleteModal(false);  // Close modal without deleting
+    };
+
     const indexOfLastDoctor = currentPage * doctorsPerPage;
     const indexOfFirstDoctor = indexOfLastDoctor - doctorsPerPage;
     const currentDoctors = doctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
 
-    // Change page
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div className="dashboard-layout">
-            {/* Sidebar */}
             <MinistrySidebar />
 
-            {/* Main content on the screen */}
             <main className="main-content">
-                {/* First Part */}
                 <header className="header">
-                    {/* Header Left Side */}
                     <div className="header-left">
                         <div className="user-info">
                             <h2 className="text-3xl font-semibold">Manage Doctors</h2>
                         </div>
                     </div>
 
-                    {/* Header Right Side */}
                     <div className="header-right flex items-center">
                         <input
                             type="text"
@@ -86,7 +93,6 @@ const ManageDoctors: React.FC = () => {
                     </div>
                 </header>
 
-                {/* Doctors Table */}
                 <div className="mt-6 overflow-x-auto">
                     <table className="min-w-full border-collapse border border-gray-300">
                         <thead>
@@ -105,13 +111,13 @@ const ManageDoctors: React.FC = () => {
                                 <td className="border border-gray-300 px-4 py-2">{doctor.userType}</td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     <button
-                                        onClick={() => window.open(`/update-user/${doctor.id}`, '_blank')}
+                                        onClick={() => navigate(`/update-doctor/${doctor.id}`)}
                                         className="text-blue-500 hover:underline"
                                     >
                                         Update
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(doctor.id)}
+                                        onClick={() => confirmDelete(doctor.id)}
                                         className="ml-4 text-red-500 hover:underline"
                                     >
                                         Delete
@@ -123,9 +129,8 @@ const ManageDoctors: React.FC = () => {
                     </table>
                 </div>
 
-                {/* Pagination */}
                 <div className="mt-4 flex justify-center">
-                    {Array.from({ length: Math.ceil(totalDoctors / doctorsPerPage) }, (_, index) => (
+                    {Array.from({length: Math.ceil(totalDoctors / doctorsPerPage)}, (_, index) => (
                         <button
                             key={index + 1}
                             onClick={() => paginate(index + 1)}
@@ -136,8 +141,15 @@ const ManageDoctors: React.FC = () => {
                     ))}
                 </div>
             </main>
+
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                show={showDeleteModal}
+                onClose={handleCloseModal}
+                onConfirm={handleDelete}
+            />
         </div>
     );
-}
+};
 
 export default ManageDoctors;
