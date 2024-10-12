@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import HealthSidebar from './HealthSidebar'
-import { FaBell, FaSearch } from "react-icons/fa";
+import {  FaSearch } from "react-icons/fa";
 
 const AllReceptionist :React.FC= () => {
   return (
