@@ -15,9 +15,11 @@ export default defineConfig({
   // Plugins array
   // Adding the React plugin with SWC (a fast JavaScript/TypeScript compiler)
   plugins: [react()],
+
+  // Resolve aliases
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "./src"), // Shortcut for importing from the 'src' directory
     },
   },
 
@@ -26,7 +28,7 @@ export default defineConfig({
     // Proxy configuration
     proxy: {
       /**
-       * Proxy '/api' requests to the backend server at 'http://localhost:5000'
+       * Proxy '/api' requests to the backend server at 'http://localhost:3000'
        * This ensures that any request to '/api/*' on the frontend will be forwarded
        * to the specified target, avoiding CORS issues during development.
        *
