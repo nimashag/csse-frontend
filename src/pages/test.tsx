@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button";
+
 const Test = () => {
   return (
     <div>
-      <h1>Fuck you CSSE</h1>
+      <Button>mawa obapan ballo</Button>
     </div>
   );
 };
