@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 const Test = () => {
   return (
     <div>
-      <Button>mawa obapan ballo</Button>
+      <Button>click me</Button>
     </div>
   );
 };
