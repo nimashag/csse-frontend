@@ -1,6 +1,5 @@
-import React from 'react'
-import MinistrySidebar from './MinistrySidebar.tsx'
-import {FaBell, FaSearch} from "react-icons/fa";
+import React from 'react';
+import MinistrySidebar from './MinistrySidebar.tsx';
 
 
 const AddDoctor: React.FC = () => {
@@ -17,26 +16,8 @@ const AddDoctor: React.FC = () => {
                     {/* Header Left Side */}
                     <div className="header-left">
                         <div className="user-info">
-                            <h2 className="text-3xl font-semibold">Add Doctors</h2>
+                            <h2 className="text-3xl font-semibold">Add Doctor</h2>
                         </div>
-                    </div>
-
-                    {/* Header Left Side */}
-                    <div className="header-right flex items-center">
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            className="h-10 pl-10 pr-10 rounded-full shadow-sm w-full border border-gray-300"
-                        />
-                        <div className="absolute mt-0.7 ml-4 text-gray-500">
-                            <FaSearch size="15px"/>
-                        </div>
-
-                        <button className="notification-icon mr-4">
-                            <FaBell size={18}/>
-                        </button>
-
-                        <img className="profile-image" alt="Admin"/>
                     </div>
                 </header>
 

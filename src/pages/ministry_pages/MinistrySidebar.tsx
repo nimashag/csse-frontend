@@ -24,18 +24,8 @@ const MinistrySidebar: React.FC = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/add-hospital">
-                                    <FaHospital/> Add Hospital
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/manage-hospitals">
                                     <FaHospital/> All Hospitals
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/add-doctor">
-                                    <FaUserDoctor/> Add Doctor
                                 </Link>
                             </li>
                             <li>
