@@ -17,6 +17,8 @@ import AllReceptionist from './pages/healthcare_manager_pages/AllReceptionist.ts
 import AllWardRooms from './pages/healthcare_manager_pages/AllWardRooms.tsx'
 import AllLabRooms from './pages/healthcare_manager_pages/AllLabRooms.tsx'
 import ManageOperations from './pages/healthcare_manager_pages/ManageOperations.tsx'
+import WHDashboard from './pages/wardhead_pages/WHDashboard.tsx'
+import WHManagePatients from './pages/wardhead_pages/WHManagePatients.tsx'
 
 function App() {
 
@@ -48,7 +50,11 @@ function App() {
         <Route path='/all-wardroomsinfo' element={<AllWardRooms />} />
         <Route path='/all-labroomsinfo' element={<AllLabRooms />} />
         <Route path='/all-operations' element={<ManageOperations />} />
-        
+
+        {/* Ward Head Routes */}
+        <Route path='/wh-dashboard' element={<WHDashboard />} />
+        <Route path='/wh-mpatients' element={<WHManagePatients/>} />
+
       </Routes>
     </Router>
   )
