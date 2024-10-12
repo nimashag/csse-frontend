@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MinistrySidebar from './MinistrySidebar.tsx';
-import config from "../../constants/config";
+import MinistrySidebar from '../MinistrySidebar.tsx';
+import config from "../../../constants/config";
 
 const AddHospital: React.FC = () => {
     const [formData, setFormData] = useState({

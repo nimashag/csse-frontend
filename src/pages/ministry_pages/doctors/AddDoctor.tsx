@@ -1,5 +1,5 @@
 import React from 'react';
-import MinistrySidebar from './MinistrySidebar.tsx';
+import MinistrySidebar from '../MinistrySidebar.tsx';
 
 
 const AddDoctor: React.FC = () => {

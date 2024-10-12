@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import MinistrySidebar from './MinistrySidebar.tsx';
+import MinistrySidebar from '../MinistrySidebar.tsx';
 import { FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import config from "../../constants/config";
+import { Link, useNavigate } from 'react-router-dom';
+import config from "../../../constants/config";
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 interface Hospital {
     hospitalId: string;
@@ -18,26 +19,35 @@ const ManageHospitals: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [hospitalsPerPage] = useState(10);
     const [totalHospitals, setTotalHospitals] = useState(0);
+    const [deleteHospitalId, setDeleteHospitalId] = useState<string | null>(null); // State to store hospital ID to delete
+    const [showDeleteModal, setShowDeleteModal] = useState(false); // State to show/hide the modal
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHospitals = async () => {
             const response = await fetch(`${config.backend_url}/api/hospitals`);
             const data = await response.json();
             setHospitals(data);
-            setTotalHospitals(data.length); // Set the total hospitals count
+            setTotalHospitals(data.length);
         };
         fetchHospitals();
     }, []);
 
-    const handleDelete = async (hospitalId: string) => {
-        const confirmed = window.confirm('Are you sure you want to delete this hospital?');
-        if (confirmed) {
+    const confirmDelete = (hospitalId: string) => {
+        setDeleteHospitalId(hospitalId);  // Set the hospital ID for deletion
+        setShowDeleteModal(true);  // Show the confirmation modal
+    };
+
+    const handleDelete = async () => {
+        if (deleteHospitalId) {
             try {
-                const response = await fetch(`${config.backend_url}/api/hospitals/${hospitalId}`, {
+                const response = await fetch(`${config.backend_url}/api/hospitals/${deleteHospitalId}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
-                    setHospitals(hospitals.filter(hospital => hospital.hospitalId !== hospitalId));
+                    setHospitals(hospitals.filter(hospital => hospital.hospitalId !== deleteHospitalId));
+                    setShowDeleteModal(false);  // Close the modal after deletion
                 } else {
                     alert('Failed to delete hospital.');
                 }
@@ -47,31 +57,26 @@ const ManageHospitals: React.FC = () => {
         }
     };
 
-    // Get current hospitals for the current page
+    const handleCloseModal = () => {
+        setShowDeleteModal(false);  // Close modal without deleting
+    };
+
     const indexOfLastHospital = currentPage * hospitalsPerPage;
     const indexOfFirstHospital = indexOfLastHospital - hospitalsPerPage;
     const currentHospitals = hospitals.slice(indexOfFirstHospital, indexOfLastHospital);
 
-    // Change page
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div className="dashboard-layout">
-            {/* Sidebar */}
             <MinistrySidebar />
-
-            {/* Main content on the screen */}
             <main className="main-content">
-                {/* First Part */}
                 <header className="header">
-                    {/* Header Left Side */}
                     <div className="header-left">
                         <div className="user-info">
                             <h2 className="text-3xl font-semibold">Manage Hospitals</h2>
                         </div>
                     </div>
-
-                    {/* Header Right Side */}
                     <div className="header-right flex items-center">
                         <input
                             type="text"
@@ -87,7 +92,6 @@ const ManageHospitals: React.FC = () => {
                     </div>
                 </header>
 
-                {/* Hospitals Table */}
                 <div className="mt-6 overflow-x-auto">
                     <table className="min-w-full border-collapse border border-gray-300">
                         <thead>
@@ -110,13 +114,13 @@ const ManageHospitals: React.FC = () => {
                                 <td className="border border-gray-300 px-4 py-2">{hospital.hospitalType}</td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     <button
-                                        onClick={() => window.open(`/update-hospital/${hospital.hospitalId}`, '_blank')}
+                                        onClick={() => navigate(`/update-hospital/${hospital.hospitalId}`)}
                                         className="text-blue-500 hover:underline"
                                     >
                                         Update
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(hospital.hospitalId)}
+                                        onClick={() => confirmDelete(hospital.hospitalId)}
                                         className="ml-4 text-red-500 hover:underline"
                                     >
                                         Delete
@@ -128,7 +132,6 @@ const ManageHospitals: React.FC = () => {
                     </table>
                 </div>
 
-                {/* Pagination */}
                 <div className="mt-4 flex justify-center">
                     {Array.from({ length: Math.ceil(totalHospitals / hospitalsPerPage) }, (_, index) => (
                         <button
@@ -141,8 +144,15 @@ const ManageHospitals: React.FC = () => {
                     ))}
                 </div>
             </main>
+
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                show={showDeleteModal}
+                onClose={handleCloseModal}
+                onConfirm={handleDelete}
+            />
         </div>
     );
-}
+};
 
 export default ManageHospitals;
