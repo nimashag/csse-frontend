@@ -35,6 +35,7 @@ import ViewClinic from "./pages/receptionist_pages/ViewClinic.tsx";
 import AddToClinic from "./pages/receptionist_pages/AddToClinic.tsx";
 import ViewPatient from "./pages/receptionist_pages/ViewPatient.tsx";
 import AddNewClinic from "./pages/receptionist_pages/AddNewClinic.tsx";
+import SuperAdminLogin from "@/pages/ministry_pages/SuperAdminLogin.tsx";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
 
           {/* Ministry Routes - dashboard */}
           <Route path='/ministry-dashboard' element={<MinistryDashboard/>}/>
+          <Route path="/super-admin-login" element={<SuperAdminLogin/>}/>
           {/* Ministry Routes - hospitals */}
           <Route path='/manage-hospitals' element={<ManageHospitals/>}/>
           <Route path='/add-hospital' element={<AddHospital/>}/>

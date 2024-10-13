@@ -42,7 +42,7 @@ const MinistrySidebar: React.FC = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/ministry-dashboard">
+                                <Link to="/super-admin-login">
                                     <IoLogOutOutline /> Logout
                                 </Link>
                             </li>
