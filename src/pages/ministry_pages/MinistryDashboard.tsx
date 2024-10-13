@@ -197,12 +197,12 @@ const DoctorDashboard: React.FC = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-6">
               <div className="bg-white p-4 shadow-md rounded-md">
-                <h3 className="text-lg font-semibold">Total Doctors</h3>
-                <p className="text-2xl font-bold">{doctorStats.total}</p>
-              </div>
-              <div className="bg-white p-4 shadow-md rounded-md">
                 <h3 className="text-lg font-semibold">Total Hospitals</h3>
                 <p className="text-2xl font-bold">{hospitalStats.total}</p>
+              </div>
+              <div className="bg-white p-4 shadow-md rounded-md">
+                <h3 className="text-lg font-semibold">Total Doctors</h3>
+                <p className="text-2xl font-bold">{doctorStats.total}</p>
               </div>
               <div className="bg-white p-4 shadow-md rounded-md">
                 <h3 className="text-lg font-semibold">Specializations</h3>
