@@ -2,7 +2,7 @@ import React from 'react';
 import DocSidebar from './DocSidebar'
 import { FaBell, FaSearch } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
 import hospitaling from '../../assets/images/doctor/hospitalimg.jpg'
 import mypatimg from '../../assets/images/doctor/mypatimg.jpg'
 import patreport from '../../assets/images/doctor/patreportimg.jpg'
@@ -10,6 +10,11 @@ import docprof from '../../assets/images/doctor/docprof.jpg'
 import docsum from '../../assets/images/doctor/docsum.jpg'
 
 const DocDashboard :React.FC= () => {
+
+  const location = useLocation();
+  const doctor = location.state?.doctor;
+  console.log(`logged in doctor: ${JSON.stringify(doctor)}`);
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -41,8 +46,6 @@ const DocDashboard :React.FC= () => {
             <button className="notification-icon mr-4">
               <FaBell size={18} />
             </button>
-
-            <img  className="profile-image" alt="Doctor" />
           </div>
         </header>
 

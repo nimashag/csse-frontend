@@ -37,12 +37,12 @@ const MinistrySidebar: React.FC = () => {
                         <div className='mt-40'>
                             <h1 className='font-bold'>ACCOUNT</h1>
                             <li>
-                                <Link to="/profile">
-                                    <CgProfile /> Profile
+                                <Link to="/ministry-dashboard">
+                                    <CgProfile /> Super Admin
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/logout">
+                                <Link to="/ministry-dashboard">
                                     <IoLogOutOutline /> Logout
                                 </Link>
                             </li>
