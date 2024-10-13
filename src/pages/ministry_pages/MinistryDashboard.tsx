@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MinistrySidebar from './MinistrySidebar.tsx';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import config from "../../constants/config";
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables); // Register Chart.js components
 
 interface Doctor {
   name: string;
@@ -11,7 +13,8 @@ interface Doctor {
 }
 
 interface Hospital {
-  name: string;
+  hospitalName: string;
+  hospitalType: string; // Added type property
 }
 
 interface ChartData {
@@ -26,6 +29,12 @@ const DoctorDashboard: React.FC = () => {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [doctorChartData, setDoctorChartData] = useState<ChartData[]>([]);
   const [hospitalChartData, setHospitalChartData] = useState<ChartData[]>([]);
+
+  // Refs for chart instances
+  const doctorChartRef = useRef<HTMLCanvasElement | null>(null);
+  const hospitalChartRef = useRef<HTMLCanvasElement | null>(null);
+  const doctorChartInstance = useRef<Chart | null>(null);
+  const hospitalChartInstance = useRef<Chart | null>(null);
 
   // Fetch data from the backend on component mount
   useEffect(() => {
@@ -55,8 +64,15 @@ const DoctorDashboard: React.FC = () => {
         const data: Hospital[] = await response.json();
         setHospitals(data);
         setHospitalStats({ total: data.length });
-        // Prepare chart data (assuming hospitals have some categorizable data, modify as necessary)
-        const hospitalData: ChartData[] = data.map(hospital => ({ name: hospital.name, value: 1 }));
+
+        // Prepare chart data for hospitals by type
+        const hospitalTypeCount = new Map<string, number>();
+        data.forEach((hospital) => {
+          const type = formatHospitalType(hospital.hospitalType);
+          hospitalTypeCount.set(type, (hospitalTypeCount.get(type) || 0) + 1);
+        });
+
+        const hospitalData: ChartData[] = Array.from(hospitalTypeCount, ([name, value]) => ({ name, value }));
         setHospitalChartData(hospitalData);
       } catch (error) {
         console.error("Error fetching hospital data:", error);
@@ -67,111 +83,151 @@ const DoctorDashboard: React.FC = () => {
     fetchHospitals();
   }, []);
 
+  const formatHospitalType = (type: string): string => {
+    return type
+        .split('_') // Split by underscore
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+        .join(' ') // Join back to a single string
+        + "s";
+  };
+
+
+  // Render charts when data changes
+  useEffect(() => {
+    if (doctorChartRef.current && doctorChartData.length > 0) {
+      // Destroy existing chart instance if it exists
+      if (doctorChartInstance.current) {
+        doctorChartInstance.current.destroy();
+      }
+
+      const ctx = doctorChartRef.current.getContext('2d');
+      if (ctx) {
+        doctorChartInstance.current = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: doctorChartData.map(data => data.name),
+            datasets: [{
+              label: 'Doctors',
+              data: doctorChartData.map(data => data.value),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Number of Doctors'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Specializations'
+                },
+                beginAtZero: true
+              }
+            },
+          },
+        });
+      }
+    }
+
+    if (hospitalChartRef.current && hospitalChartData.length > 0) {
+      // Destroy existing chart instance if it exists
+      if (hospitalChartInstance.current) {
+        hospitalChartInstance.current.destroy();
+      }
+
+      const ctx = hospitalChartRef.current.getContext('2d');
+      if (ctx) {
+        hospitalChartInstance.current = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: hospitalChartData.map(data => data.name),
+            datasets: [{
+              label: 'Hospitals Distribution by Type',
+              data: hospitalChartData.map(data => data.value),
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+              ],
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            radius: "90%",
+            responsive: true,
+          },
+        });
+      }
+    }
+  }, [doctorChartData, hospitalChartData]);
+
   return (
-    <div className="dashboard-layout flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <MinistrySidebar />
+      <div className="dashboard-layout flex min-h-screen">
+        {/* Sidebar */}
+        <MinistrySidebar />
 
-      {/* Main Content Area */}
-      <main className="main-content flex-1 p-6">
-        {/* Header Section */}
-        <header className="header flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-semibold">Ministry Dashboard</h1>
-        </header>
+        {/* Main Content Area */}
+        <main className="main-content flex-1 p-6">
+          {/* Header Section */}
+          <header className="header flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-semibold">Ministry Dashboard</h1>
+          </header>
 
-        {/* Doctors and Hospitals Analytics Section */}
-        <section>
-          {/* Stats Cards */}
-          <div className="grid grid-cols-3 gap-6">
-            <div className="bg-white p-4 shadow-md rounded-md">
-              <h3 className="text-lg font-semibold">Total Doctors</h3>
-              <p className="text-2xl font-bold">{doctorStats.total}</p>
-            </div>
-            <div className="bg-white p-4 shadow-md rounded-md">
-              <h3 className="text-lg font-semibold">Total Hospitals</h3>
-              <p className="text-2xl font-bold">{hospitalStats.total}</p>
-            </div>
-            <div className="bg-white p-4 shadow-md rounded-md">
-              <h3 className="text-lg font-semibold">Specializations</h3>
-              <p className="text-2xl font-bold">{doctorStats.specializations}</p>
-            </div>
-          </div>
-
-          {/* Charts Section */}
-          <div className="mt-8 grid grid-cols-2 gap-6">
-            <div className="bg-white p-6 shadow-md rounded-md">
-              <h3 className="text-lg font-semibold mb-4">Doctors by Specialization</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={doctorChartData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {doctorChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.value > 0 ? `hsl(${(index / doctorChartData.length) * 360}, 70%, 50%)` : '#ccc'} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+          {/* Doctors and Hospitals Analytics Section */}
+          <section>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-3 gap-6">
+              <div className="bg-white p-4 shadow-md rounded-md">
+                <h3 className="text-lg font-semibold">Total Doctors</h3>
+                <p className="text-2xl font-bold">{doctorStats.total}</p>
+              </div>
+              <div className="bg-white p-4 shadow-md rounded-md">
+                <h3 className="text-lg font-semibold">Total Hospitals</h3>
+                <p className="text-2xl font-bold">{hospitalStats.total}</p>
+              </div>
+              <div className="bg-white p-4 shadow-md rounded-md">
+                <h3 className="text-lg font-semibold">Specializations</h3>
+                <p className="text-2xl font-bold">{doctorStats.specializations}</p>
+              </div>
             </div>
 
-            <div className="bg-white p-6 shadow-md rounded-md">
-              <h3 className="text-lg font-semibold mb-4">Hospitals Distribution</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={hospitalChartData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#82ca9d"
-                    dataKey="value"
-                  >
-                    {hospitalChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.value > 0 ? `hsl(${(index / hospitalChartData.length) * 360}, 70%, 50%)` : '#ccc'} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+            {/* Chart Section */}
+            <div className="mt-8 flex space-x-8">
+              <div className="flex-0.8">
+                <h2 className="text-xl font-semibold mb-4">Hospitals Distribution</h2>
+                <canvas ref={hospitalChartRef} width="400" height="200"></canvas>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold mb-4">Doctors by Specialization</h2>
+                <canvas ref={doctorChartRef} width="400" height="200"></canvas>
+              </div>
             </div>
-          </div>
 
-          {/* Doctors Data Table */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Doctors Data Table</h2>
-            <div className="table-container bg-white p-6 shadow-md rounded-md">
-              <table className="min-w-full table-auto">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2 text-left">Name</th>
-                    <th className="px-4 py-2 text-left">Email</th>
-                    <th className="px-4 py-2 text-left">Specialization</th>
-                    <th className="px-4 py-2 text-left">Hospital</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {doctors.map((doctor, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="px-4 py-2">{doctor.name}</td>
-                      <td className="px-4 py-2">{doctor.email}</td>
-                      <td className="px-4 py-2">{doctor.specialization}</td>
-                      <td className="px-4 py-2">{doctor.hospital}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+          </section>
+        </main>
+      </div>
   );
 };
 
 export default DoctorDashboard;
+
+
