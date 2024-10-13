@@ -48,6 +48,7 @@ import DoctorProfile from "./pages/doctor_pages/DoctorProfile.tsx";
 import LabTechLogin from "./pages/lab_tech_pages/LabTechLogin.tsx";
 import LabTechProfile from "./pages/lab_tech_pages/LabTechProfile.tsx";
 import LabShowPatients from "./pages/lab_tech_pages/LabShowPatients.tsx";
+import LabShowLabTests from "./pages/lab_tech_pages/LabShowLabTests.tsx";
 import LabTechAssinOperations from "./pages/lab_tech_pages/LabTechAssinOperations.tsx";
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
           <Route path="/lab-manage" element={<LabManage />} />
           <Route path="/labt-profile" element={<LabTechProfile />} />
           <Route path="/labshow-patients" element={<LabShowPatients />} />
+          <Route path="/labshow-labtests" element={<LabShowLabTests />} />
           <Route path="/lab-assign-op" element={<LabTechAssinOperations />} />
 
           {/* Doctor Routes */}
