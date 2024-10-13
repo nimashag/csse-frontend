@@ -3,6 +3,8 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import RecepSidebar from "./RecepSidebar";
+import { FaBell, FaSearch } from "react-icons/fa";
 
 function AddToClinic() {
   const { id } = useParams<{ id: string }>();
@@ -39,30 +41,81 @@ function AddToClinic() {
   };
 
   return (
-    <div>
-      <div>Assign Patients to the Bed</div>
+    <div className="dashboard-layout">
+      {/* Sidebar */}
+      <RecepSidebar />
 
-      <table>
-        <tr>
-          <td>Patient Name</td>
-          <td>Age</td>
-          <td>Gender</td>
-          <td>Action</td>
-        </tr>
+      {/* Main content on the screen */}
+      <main className="main-content">
 
-        {patients.map((patient, index) => (
-          <tr key={index}>
-            <td>{patient.name}</td>
-            <td>{patient.age}</td>
-            <td>{patient.gender}</td>
-            <td>
-              <button onClick={() => handleAssignToClinic(patient.id)}>
-                Assign to clinic
-              </button>
-            </td>
-          </tr>
-        ))}
-      </table>
+      {/* First Part */}  
+      <header className="header">
+          {/* Header Left Side */}
+          <div className="header-left">
+            <div className="user-info">
+              <h2 className="text-3xl font-semibold">Assign Patients</h2>
+            </div>
+          </div>
+
+          {/* Header Left Side */}
+          <div className="header-right flex items-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="h-10 pl-10 pr-10 rounded-full shadow-sm w-full border border-gray-300"
+            />
+            <div className="absolute mt-0.7 ml-4 text-gray-500">
+              <FaSearch size="15px" />
+            </div>
+
+            <button className="notification-icon mr-4">
+              <FaBell size={18} />
+            </button>
+            <img  className="profile-image" alt="Doctor" />
+          </div>
+        </header>
+
+        <div className="dashboard-container">
+          <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-center mb-4">Assign Patients To Clinic</h2>
+            
+            <table className="min-w-full bg-white border border-gray-300">
+              <thead>
+                <tr className="bg-black">
+                  <th className="py-3 px-4 text-left text-white">Patient Name</th>
+                  <th className="py-3 px-4 text-left text-white">Age</th>
+                  <th className="py-3 px-4 text-left text-white">Gender</th>
+                  <th className="py-3 px-4 text-center text-white">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.map((patient, index) => (
+                  <tr key={index} className="border-b hover:bg-gray-50">
+                    <td className="py-4 px-4">
+                      <label className="font-semibold text-black">{patient.name || 'N/A'}</label>
+                    </td>
+                    <td className="py-4 px-4">
+                      <label className="font-semibold text-black">{patient.age || 'N/A'}</label>
+                      
+                    </td>
+                    <td className="py-4 px-4">
+                      <label className="font-semibold text-black">{patient.gender || 'N/A'}</label>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <button
+                        className="mt-6 px-8 py-2 text-white bg-green-700 rounded-md hover:bg-green-800"
+                        onClick={() => handleAssignToClinic(patient.id)}
+                      >
+                        Assign
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

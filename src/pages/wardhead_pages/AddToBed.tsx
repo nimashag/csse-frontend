@@ -3,6 +3,8 @@ import axios from 'axios';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaBell, FaSearch } from "react-icons/fa";
+import WHSidebar from "./WHSidebar";
 
 function AddToBed() {
 
@@ -40,34 +42,71 @@ function AddToBed() {
     };  
 
   return (
-    <div>
-        <div>Assign Patients to the Bed</div>
+    <div className="dashboard-layout">
+    {/* Sidebar */}
+    <WHSidebar/>
 
-        <table>
-            <tr>
-                <td>Patient Name</td>
-                <td>Age</td>
-                <td>Gender</td>
-                <td>Action</td>
-            </tr>
-            
-                {patients.map((patient,index) => (
-                    <tr key={index}>
-                    <td>{patient.name}</td>
-                    <td>{patient.age}</td>
-                    <td>{patient.gender}</td>
-                    <td>
-                        <button onClick={() => assignToBed(patient.id)}>Assign to bed</button>
-                    </td>
-                    </tr>
-                ))}
-                
-            
-        </table>
+    {/* Main content on the screen */}
+    <main className="main-content">
 
+    {/* First Part */}  
+    <header className="header">
+        {/* Header Left Side */}
+        <div className="header-left">
+          <div className="user-info">
+            <h2 className="text-3xl font-semibold">Assign Patients to the Bed</h2>
+          </div>
+        </div>
 
+        {/* Header Left Side */}
+        <div className="header-right flex items-center">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="h-10 pl-10 pr-10 rounded-full shadow-sm w-full border border-gray-300"
+          />
+          <div className="absolute mt-0.7 ml-4 text-gray-500">
+            <FaSearch size="15px" />
+          </div>
 
-    </div>
+          <button className="notification-icon mr-4">
+            <FaBell size={18} />
+          </button>
+          <img  className="profile-image" alt="WH" />
+        </div>
+      </header>
+
+      <div className="dashboard-container">
+          <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold">Patient Name</th>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold">Age</th>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold">Gender</th>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {patients.map((patient, index) => (
+                <tr key={index} className="border-b hover:bg-gray-50">
+                  <td className="py-4 px-6">{patient.name}</td>
+                  <td className="py-4 px-6">{patient.age}</td>
+                  <td className="py-4 px-6">{patient.gender}</td>
+                  <td className="py-4 px-6">
+                    <button
+                      onClick={() => assignToBed(patient.id)}
+                      className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition duration-200"
+                    >
+                      Assign to Bed
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+      </div>
+    </main>
+  </div>
   )
 }
 

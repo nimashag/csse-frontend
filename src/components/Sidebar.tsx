@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleNavigationChoice, activeChoice 
               onClick={() => handleNavigationChoice("add-consultation")}
             >
               <FaUserMd className="w-5 h-5 mr-3" />
-              Add Consultation
+              Appointments
             </a>
 
             {/* Create Schedules */}
@@ -54,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleNavigationChoice, activeChoice 
               onClick={() => handleNavigationChoice("create-schedules")}
             >
               <AiOutlineCalendar className="w-5 h-5 mr-3" />
-              Create Schedules
+              Clinics
             </a>
 
             {/* View Health Reports */}
@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleNavigationChoice, activeChoice 
             </a>
 
             {/* Notification Panel */}
-            <a
+            {/* <a
               href="#"
               className={`flex items-center p-2 text-gray-700 rounded-lg ${
                 activeChoice === "notification-panel" ? "bg-blue-100" : "hover:bg-blue-100"
@@ -80,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleNavigationChoice, activeChoice 
               <IoMdNotificationsOutline className="w-5 h-5 mr-3" />
               Notification Panel
               <span className="ml-2 inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-            </a>
+            </a> */}
           </div>
 
           {/* Divider */}
