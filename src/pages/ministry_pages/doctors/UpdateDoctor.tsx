@@ -10,13 +10,15 @@ const UpdateDoctor: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        specialization: ''
+        specialization: '',
+        workingHospitals: ''
     });
 
     const [errors, setErrors] = useState({
         name: '',
         email: '',
-        specialization: ''
+        specialization: '',
+        workingHospitals: ''
     });
 
     const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
@@ -32,7 +34,8 @@ const UpdateDoctor: React.FC = () => {
                     setFormData({
                         name: data.name,
                         email: data.email,
-                        specialization: data.specialization || ''
+                        specialization: data.specialization || '',
+                        workingHospitals: data.workingHospitals
                     });
                 } else {
                     throw new Error('Failed to fetch doctor data');
@@ -112,6 +115,7 @@ const UpdateDoctor: React.FC = () => {
                     email: formData.email,
                     specialization: formData.specialization,
                     userType: 'DOCTOR',
+                    workingHospitals: formData.workingHospitals,
                 }),
             });
 

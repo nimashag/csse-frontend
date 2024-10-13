@@ -47,7 +47,7 @@ const UnassignHospitalModal: React.FC<UnassignHospitalModalProps> = ({ doctorId,
                     value={selectedHospitalId}
                     onChange={(e) => setSelectedHospitalId(e.target.value)}
                 >
-                    <option value="">Select Hospital to Unassign</option>
+                    <option value="">Select Hospital</option>
                     {workingHospitals.map((hospital) => (
                         <option key={hospital.hospitalId} value={hospital.hospitalId}>
                             {hospital.hospitalName}
