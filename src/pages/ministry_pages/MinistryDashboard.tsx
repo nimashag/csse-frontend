@@ -9,12 +9,13 @@ interface Doctor {
   name: string;
   email: string;
   specialization: string;
-  hospital: string;
+  workingHospitals: string[];
 }
 
 interface Hospital {
   hospitalName: string;
   hospitalType: string; // Added type property
+  area: string;
 }
 
 interface ChartData {
@@ -29,12 +30,19 @@ const DoctorDashboard: React.FC = () => {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [doctorChartData, setDoctorChartData] = useState<ChartData[]>([]);
   const [hospitalChartData, setHospitalChartData] = useState<ChartData[]>([]);
+  const [doctorDistributionChartData, setDoctorDistributionChartData] = useState<ChartData[]>([]);
+  const [hospitalAreaChartData, setHospitalAreaChartData] = useState<ChartData[]>([]);
 
   // Refs for chart instances
   const doctorChartRef = useRef<HTMLCanvasElement | null>(null);
   const hospitalChartRef = useRef<HTMLCanvasElement | null>(null);
   const doctorChartInstance = useRef<Chart | null>(null);
   const hospitalChartInstance = useRef<Chart | null>(null);
+  const doctorDistributionChartRef = useRef<HTMLCanvasElement | null>(null);
+  const doctorDistributionChartInstance = useRef<Chart | null>(null);
+  const hospitalAreaChartRef = useRef<HTMLCanvasElement | null>(null);
+  const hospitalAreaChartInstance = useRef<Chart | null>(null);
+
 
   // Fetch data from the backend on component mount
   useEffect(() => {
@@ -44,6 +52,7 @@ const DoctorDashboard: React.FC = () => {
         const data: Doctor[] = await response.json();
         setDoctors(data);
 
+        // Specialization count
         const specializationCount = new Map<string, number>();
         data.forEach((doctor) => {
           const specialization = doctor.specialization;
@@ -53,6 +62,17 @@ const DoctorDashboard: React.FC = () => {
         const doctorData: ChartData[] = Array.from(specializationCount, ([name, value]) => ({ name, value }));
         setDoctorChartData(doctorData);
         setDoctorStats({ total: data.length, specializations: specializationCount.size });
+
+        // Doctor distribution by hospital
+        const hospitalDoctorCount = new Map<string, number>();
+        data.forEach((doctor) => {
+          doctor.workingHospitals.forEach((hospitalId) => {
+            hospitalDoctorCount.set(hospitalId, (hospitalDoctorCount.get(hospitalId) || 0) + 1);
+          });
+        });
+
+        const distributionData: ChartData[] = Array.from(hospitalDoctorCount, ([name, value]) => ({ name, value }));
+        setDoctorDistributionChartData(distributionData);
       } catch (error) {
         console.error("Error fetching doctor data:", error);
       }
@@ -74,6 +94,15 @@ const DoctorDashboard: React.FC = () => {
 
         const hospitalData: ChartData[] = Array.from(hospitalTypeCount, ([name, value]) => ({ name, value }));
         setHospitalChartData(hospitalData);
+
+        // Prepare chart data for hospitals by area
+        const areaCount = new Map<string, number>();
+        data.forEach((hospital) => {
+          areaCount.set(hospital.area, (areaCount.get(hospital.area) || 0) + 1);
+        });
+
+        const areaData: ChartData[] = Array.from(areaCount, ([name, value]) => ({ name, value }));
+        setHospitalAreaChartData(areaData);
       } catch (error) {
         console.error("Error fetching hospital data:", error);
       }
@@ -178,7 +207,92 @@ const DoctorDashboard: React.FC = () => {
         });
       }
     }
-  }, [doctorChartData, hospitalChartData]);
+
+    if (doctorDistributionChartRef.current && doctorDistributionChartData.length > 0) {
+      if (doctorDistributionChartInstance.current) {
+        doctorDistributionChartInstance.current.destroy();
+      }
+
+      const ctx = doctorDistributionChartRef.current.getContext('2d');
+      if (ctx) {
+        doctorDistributionChartInstance.current = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: doctorDistributionChartData.map(data => hospitals.find(h => h.hospitalId === data.name)?.hospitalName || 'Unknown Hospital'),
+            datasets: [{
+              label: 'Doctors per Hospital',
+              data: doctorDistributionChartData.map(data => data.value),
+              backgroundColor: 'rgba(153, 102, 255, 0.2)',
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Number of Doctors'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Hospitals'
+                },
+                beginAtZero: true
+              }
+            },
+          },
+        });
+      }
+    }
+
+    if (hospitalAreaChartRef.current && hospitalAreaChartData.length > 0) {
+      if (hospitalAreaChartInstance.current) {
+        hospitalAreaChartInstance.current.destroy();
+      }
+
+      const ctx = hospitalAreaChartRef.current.getContext('2d');
+      if (ctx) {
+        hospitalAreaChartInstance.current = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: hospitalAreaChartData.map(data => data.name),
+            datasets: [{
+              label: 'Hospitals per Area',
+              data: hospitalAreaChartData.map(data => data.value),
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Number of Hospitals'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Areas'
+                },
+                beginAtZero: true
+              }
+            },
+          },
+        });
+      }
+    }
+
+  }, [doctorChartData, hospitalChartData, doctorDistributionChartData, hospitalAreaChartData]);
 
   return (
       <div className="dashboard-layout flex min-h-screen">
@@ -213,12 +327,23 @@ const DoctorDashboard: React.FC = () => {
             {/* Chart Section */}
             <div className="mt-8 flex space-x-8">
               <div className="flex-0.8">
-                <h2 className="text-xl font-semibold mb-4">Hospitals Distribution</h2>
+                <h2 className="text-xl font-semibold mb-4">Hospitals Distribution by Type</h2>
                 <canvas ref={hospitalChartRef} width="400" height="200"></canvas>
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-semibold mb-4">Doctors by Specialization</h2>
+                <h2 className="text-xl font-semibold mb-4">Doctors Distribution by Specialization</h2>
                 <canvas ref={doctorChartRef} width="400" height="200"></canvas>
+              </div>
+            </div>
+
+            <div className="mt-8 flex space-x-8">
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold mb-4">Hospitals Distribution by Area</h2>
+                <canvas ref={hospitalAreaChartRef} width="400" height="200"></canvas>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold mb-4">Doctors Distribution by Hospital</h2>
+                <canvas ref={doctorDistributionChartRef} width="400" height="200"></canvas>
               </div>
             </div>
 
