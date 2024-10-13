@@ -19,7 +19,7 @@ const MinistrySidebar: React.FC = () => {
                     <ul>
                         <div className='mt-10'>
                             <li>
-                                <Link to="/dashboard">
+                                <Link to="/ministry-dashboard">
                                     <RiHome3Line/> Dashboard
                                 </Link>
                             </li>

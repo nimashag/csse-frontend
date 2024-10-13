@@ -3,6 +3,7 @@ import './App.css'
 import LoginSignup from './pages/PatientLogin'
 import Dashboard from './pages/PatientDashboard'
 import AdminLogin from './pages/AdminLogins'
+import MinistryDashboard from './pages/ministry_pages/MinistryDashboard.tsx';
 import ManageHospitals from "./pages/ministry_pages/hospitals/ManageHospitals.tsx";
 import AddHospital from './pages/ministry_pages/hospitals/AddHospital.tsx'
 import UpdateHospital from './pages/ministry_pages/hospitals/UpdateHospital.tsx'
@@ -35,6 +36,7 @@ function App() {
         <Route path='/admin-login' element={<AdminLogin />} />
 
         {/* Ministry Routes - hospitals */}
+        <Route path='/ministry-dashboard' element={<MinistryDashboard />} />
         <Route path='/manage-hospitals' element={<ManageHospitals />} />
         <Route path='/add-hospital' element={<AddHospital />} />
         <Route path="/update-hospital/:id" element={<UpdateHospital />} />
