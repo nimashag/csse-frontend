@@ -1,6 +1,6 @@
 import React from 'react';
 import {MdEventAvailable} from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { GrWorkshop } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -10,6 +10,10 @@ import './SampleSidebarLab.css';
 
 
 const SampleSidebarLab :React.FC= () => {
+    const location = useLocation();  
+    const labtech = location.state?.labtech;
+    console.log(`logged in labtech: ${JSON.stringify(labtech)}`);
+
   return (
     <div>
         {/* Sidebar */}
@@ -22,35 +26,25 @@ const SampleSidebarLab :React.FC= () => {
           <ul>
             <div className='mt-10'>
             <li>
-              <Link to="">
+              <Link to={`/lab-manage`} state={{ labtech }}>
               <RiHome3Line /> Dashboard
               </Link>
             </li>
             <li>
-              <Link to="">
-              <FaUserDoctor /> Assigned Doctors
-              </Link>
-            </li>
-            <li>
-              <Link to="">
-              <MdEventAvailable /> Lab Appoinments
-              </Link>
-            </li>
-            <li>
-              <Link to="">
-              <GrWorkshop /> Work Hours
+              <Link to={`/labtech`} state={{ labtech }}>
+              <MdEventAvailable /> Lab Appoinments    
               </Link>
             </li>
             </div>
             <div className='mt-40'>
             <h1 className='font-bold'>ACCOUNT</h1>
             <li>
-              <Link to="">
+              <Link to={`/labt-profile`} state={{ labtech }}>
               <CgProfile /> Profile
               </Link>
             </li>
             <li>
-              <Link to="">
+              <Link to={`/labt-login`} state={{ labtech }}>
               <IoLogOutOutline /> Logout
               </Link>
             </li>

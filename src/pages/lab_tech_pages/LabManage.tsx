@@ -1,10 +1,14 @@
 import React from 'react'
 import SampleSidebarLab from './SampleSidebarLab'
 import { FaBell, FaSearch } from "react-icons/fa";
-
-
+import { useLocation } from 'react-router-dom';
 
 const LabManage :React.FC= () => {
+
+    const location = useLocation(); 
+    const labtech = location.state?.labtech;
+    console.log(`logged in labtech: ${JSON.stringify(labtech)}`);
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -18,7 +22,7 @@ const LabManage :React.FC= () => {
           {/* Header Left Side */}
           <div className="header-left">
             <div className="user-info">
-              <h2 className="text-3xl font-semibold">Manage Labortories</h2>
+              <h2 className="text-3xl font-semibold">Lab Technician Dashboard</h2>
             </div>
           </div>
 
@@ -37,7 +41,7 @@ const LabManage :React.FC= () => {
               <FaBell size={18} />
             </button>
 
-            <img  className="profile-image" alt="Admin" />
+            <img src="https://images.pexels.com/photos/19601385/pexels-photo-19601385/free-photo-of-young-doctor-holding-a-stethoscope.jpeg?auto=compress&cs=tinysrgb&w=600" className="profile-image" alt="Admin" />
           </div>
         </header>
 

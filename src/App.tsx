@@ -45,6 +45,8 @@ import UpdatePatient from "./pages/receptionist_pages/UpdatePatient.tsx";
 import SingleAppointmentView from "./pages/doctor_pages/SingleAppointmentView.tsx";
 import ReportPatients from "./pages/doctor_pages/ReportPatients.tsx";
 import DoctorProfile from "./pages/doctor_pages/DoctorProfile.tsx";
+import LabTechLogin from "./pages/lab_tech_pages/LabTechLogin.tsx";
+import LabTechProfile from "./pages/lab_tech_pages/LabTechProfile.tsx";
 
 function App() {
   return (
@@ -67,12 +69,14 @@ function App() {
           <Route path='/manage-doctors' element={<ManageDoctors/>}/>
           <Route path='/add-doctor' element={<AddDoctor/>}/>
           <Route path="/update-doctor/:id" element={<UpdateDoctor/>}/>
-          <Route path="/doctor-login" element={<DoctorLogin/>}/>
 
           {/* Lab Tech Routes */}
+          <Route path='/labt-login' element={<LabTechLogin />} />
           <Route path="/lab-manage" element={<LabManage />} />
+          <Route path="/labt-profile" element={<LabTechProfile />} />
 
           {/* Doctor Routes */}
+          <Route path="/doctor-login" element={<DoctorLogin/>}/>
           <Route path="/doc-dashboard" element={<DocDashboard />} />
           <Route path="/asigned-hos" element={<AssignedHospital />} />
           <Route path="/room-allocation" element={<RoomAllocation />} />
