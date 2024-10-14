@@ -32,7 +32,12 @@ const SampleSidebarLab :React.FC= () => {
             </li>
             <li>
               <Link to={`/labtech`} state={{ labtech }}>
-              <MdEventAvailable /> Lab Appoinments    
+              <MdEventAvailable /> Upload Lab Reports 
+              </Link>
+            </li>
+            <li>
+              <Link to={`/labshow-patients`} state={{ labtech }}>
+              <MdEventAvailable /> Show All Patients 
               </Link>
             </li>
             </div>

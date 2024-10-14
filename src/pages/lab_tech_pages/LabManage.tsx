@@ -1,7 +1,11 @@
 import React from 'react'
 import SampleSidebarLab from './SampleSidebarLab'
 import { FaBell, FaSearch } from "react-icons/fa";
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
+import lab1img from '../../assets/images/labtech/labupload.jpg'
+import lab2img from '../../assets/images/labtech/labmanageuser.jpg'
+import lab3img from '../../assets/images/labtech/labpro.jpg'
 
 const LabManage :React.FC= () => {
 
@@ -45,6 +49,60 @@ const LabManage :React.FC= () => {
           </div>
         </header>
 
+        <div className="dashboard-container">
+          {/* Dash-Start */}
+          <h2 className="text-2xl font-bold leading-snug text-black">
+            Patients Dashboard
+          </h2> 
+          <div className="flex w-full md:flex-row  items-center gap-5">
+            <section className="dashboard-overview-2">
+              <div className="stat-card">
+                <h3 className="text-xl font-semibold text-black">
+                  Upload Reports
+                </h3>
+                <img src={lab1img} className="h-64 mt-2 mx-auto" />
+                <p className="mt-2 ">
+                    Manage and schedule user reports and upload reports to users.
+                </p>
+                <Link to={`/labtech`} state={{ labtech }}>
+                  <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800 transition-all duration-300">
+                    Upload
+                  </button>
+                </Link>
+              </div>
+
+              <div className="stat-card">
+                <h3 className="text-xl font-semibold text-black">
+                  My Patients
+                </h3>
+                <img src={lab2img} className="h-64 mt-2 mx-auto" />
+                <p className="mt-2">
+                    Access patient profiles, view medical histories, and track ongoing treatments and progress.
+                </p>
+                <Link to={`/labshow-patients`} state={{ labtech }}>
+                  <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
+                    View
+                  </button>
+                </Link>
+              </div>
+
+              <div className="stat-card ">
+                <h3 className="text-xl font-semibold text-black">
+                  Manage Profile
+                </h3>
+                <img src={lab3img} className="h-64 mt-2 mx-auto" />
+                <p className="mt-2">
+                    Manage and check assigned hospital and assigned laboratory.
+                </p>
+                <Link to={`/labt-profile`} state={{ labtech }}>
+                  <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
+                    Profile
+                  </button>
+                </Link> 
+              </div> 
+            </section>
+          </div>
+        </div>
       </main>
     </div>
   )
