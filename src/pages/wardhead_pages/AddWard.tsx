@@ -2,6 +2,8 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaBell, FaSearch } from "react-icons/fa";
+import WHSidebar from "./WHSidebar";
 
 function AddWard() {
   const hospital = "67102b30c5c477743962a815";
@@ -43,46 +45,77 @@ function AddWard() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Ward No
-        </label>
-        <input
-          type="number"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => setWardNo(Number(e.target.value))}
-          required
-        />
-      </div>
+    <div className="dashboard-layout">
+    {/* Sidebar */}
+    <WHSidebar/>
 
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Number of beds
-        </label>
-        <input
-          type="number"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => setBeds(Number(e.target.value))}
-          required
-        />
-      </div>
+    {/* Main content on the screen */}
+    <main className="main-content">
 
-      <div className="flex justify-between">
-        <button
-          onClick={handleSubmit}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Submit
-        </button>
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-        >
-          Cancel
-        </button>
+    {/* First Part */}  
+    <header className="header">
+        {/* Header Left Side */}
+        <div className="header-left">
+          <div className="user-info">
+            <h2 className="text-3xl font-semibold">Available Clinics</h2>
+          </div>
+        </div>
+
+        {/* Header Left Side */}
+        <div className="header-right flex items-center">
+          <button className="notification-icon mr-4">
+            <FaBell size={18} />
+          </button>
+          <img  className="profile-image" alt="Doctor" />
+        </div>
+      </header>
+
+      <div className="dashboard-container">
+        <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Add Ward Details</h2>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 text-xl font-semibold mb-2">
+              Ward No
+            </label>
+            <input
+              type="number"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setWardNo(Number(e.target.value))}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 text-xl font-semibold mb-2">
+              Number of Beds
+            </label>
+            <input
+              type="number"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setBeds(Number(e.target.value))}
+              required
+            />
+          </div>
+
+          <div className="flex justify-between">
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => navigate(-1)}
+              className="bg-gray-600 text-white px-5 py-2 rounded-md hover:bg-gray-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
+  </div>
   );
 }
 

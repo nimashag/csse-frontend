@@ -57,45 +57,45 @@ const WHDashboard :React.FC= () => {
             <section className="dashboard-overview-2">
               <div className="stat-card">
                 <h3 className="text-xl font-semibold text-black">
-                  Manage Patients
+                  Manage Ward Rooms
                 </h3>
                 <img src={ward1} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2 ">
-                    Manage hospital information, add or update hospital details, and track the facilities available.
+                  Organize the ward rooms, ensuring optimal use and maintenance for patient comfort.
                 </p>
-                <Link to="">
+                <Link to="/wards">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-500  transition-all duration-300">
-                    View Hospitals
+                    Manage Ward
                   </button>
                 </Link>
               </div>
 
               <div className="stat-card">
                 <h3 className="text-xl font-semibold text-black">
-                    Manage Ward Rooms
+                    Add Ward Rooms
                 </h3>
                 <img src={ward2} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2">
-                    Access patient profiles, view medical histories, and track ongoing treatments and progress.
+                      Create new ward rooms to expand hospital capacity and improve patient care.
                 </p>
-                <Link to="">
+                <Link to="/wards/create">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-500 transition-all duration-300">
-                    Check Reports
+                    Add Ward
                   </button>
                 </Link>
               </div>
 
               <div className="stat-card ">
                 <h3 className="text-xl font-semibold text-black">
-                  Patient Reports
+                  Ward Reports
                 </h3>
                 <img src={ward3} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2">
-                    Generate reports on patient care, treatment outcomes, and overall health analytics.
+                    Generate reports on ward occupancy, patient distribution, and room utilization for management insights.
                 </p>
                 <Link to="">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-500 transition-all duration-300">
-                    Patient Reports
+                    Check Reports
                   </button>
                 </Link>
               </div>
