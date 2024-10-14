@@ -4,6 +4,9 @@ import { FaBell, FaSearch } from "react-icons/fa";
 import docprofile from '../../assets/images/doctor/docaimg.png';
 import { useLocation } from "react-router-dom";
 import config from "../../constants/config";
+import IPatient from "@/types/patient";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Appointment {
   appointmentId: string;
@@ -17,37 +20,52 @@ interface Appointment {
   isPaid: boolean;   
 }
 
-// Define the PaymentStatus enum
 enum PaymentStatus {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
   FAILED = "FAILED"
 }
 
+interface Hospital {
+  hospitalId: string;
+  hospitalName: string;
+  hospitalEmail: string;
+  area: string;
+  contactNumber: string;
+  hospitalType: string;
+  imageUrl: string;
+}
+
 const PatientAppointment: React.FC = () => {
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [currentAppointments, setCurrentAppointments] = useState<Appointment[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [appointmentsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [patients, setPatients] = useState<IPatient[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   const location = useLocation();
   const doctor = location.state?.doctor;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchAppointments = async () => {
-      // Ensure patientId is available
-      if (!doctor || !doctor.patientId) {
+      if (!doctor) {
         console.error("No valid patient ID found");
         return;
       }
 
       try {
-        const response = await fetch(`${config.backend_url}/api/patients/${doctor.patientId}/appointments`);
+        const response = await fetch(`${config.backend_url}/api/patients/{patientId}/appointments/doctor/${doctor.id}`);
         if (!response.ok) {
           throw new Error(`Error fetching appointments: ${response.statusText}`);
         }
         const data = await response.json();
         setAppointments(data);
+        setCurrentAppointments(data); // Initialize current appointments
       } catch (error) {
         console.error("Failed to fetch appointments:", error);
       }
@@ -55,16 +73,39 @@ const PatientAppointment: React.FC = () => {
     fetchAppointments();
   }, [doctor]);
 
-  const indexOfLastAppointment = currentPage * appointmentsPerPage;
-  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
-  const currentAppointments = appointments.slice(indexOfFirstAppointment, indexOfLastAppointment);
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/patients/");
+        setPatients(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  const formatAppointmentType = (type: string): string => {
-    return type
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  };
+    fetchPatients();
+  }, []);
+
+  useEffect(() => {
+    const fetchHospitals = async () => {
+      const response = await fetch(`${config.backend_url}/api/hospitals`);
+      const data = await response.json();
+      setHospitals(data);
+    };
+    fetchHospitals();
+  }, []);
+
+  // Filter appointments based on search query and selected date
+  useEffect(() => {
+    const filteredAppointments = appointments.filter(appointment => {
+      const patient = patients.find(p => p.id === appointment.patientId);
+      const matchesSearchQuery = searchQuery ? patient?.name.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+      const matchesSelectedDate = selectedDate ? appointment.date === selectedDate : true;
+
+      return matchesSearchQuery && matchesSelectedDate;
+    });
+    setCurrentAppointments(filteredAppointments);
+  }, [searchQuery, selectedDate, appointments, patients]);
 
   return (
     <div className="dashboard-layout">
@@ -73,20 +114,17 @@ const PatientAppointment: React.FC = () => {
 
       {/* Main content on the screen */}
       <main className="main-content">
-        {/* First Part */}  
         <header className="header">
-          {/* Header Left Side */}
           <div className="header-left">
             <div className="user-info">
               <h2 className="text-3xl font-semibold">Patient Appointments</h2>
             </div>
           </div>
 
-          {/* Header Right Side */}
           <div className="header-right flex items-center">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search by Patient Name..."
               className="h-10 pl-10 pr-10 rounded-full shadow-sm w-full border border-gray-300"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -103,46 +141,56 @@ const PatientAppointment: React.FC = () => {
           </div>
         </header>
 
+        {/* Date Filter */}
+        <div className="mt-4 flex justify-between items-center">
+          <label className="mr-2">Select Appointment Date:</label>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className="h-10 rounded-full px-10 border border-gray-300"
+          />
+        </div>
+
         <div className='dashboard-container'>
-          <div className="mt-6 space-y-6">
-            {currentAppointments.map((appointment) => (
-              <div
-                key={appointment.appointmentId}
-                className="bg-white shadow-lg rounded-lg p-6 flex justify-between items-center"
-              >
-                {/* Left Part - Hospital Image and Basic Info */}
-                <div className="flex items-center space-x-6">
-                  {/* Hospital Image */}
-                  <div className="w-24 h-24">
-                    <img
-                      src={"https://i.pinimg.com/enabled/564x/a8/a1/07/a8a107e2a9ae0ef0e3c77a0dd76b73e7.jpg"} 
-                      alt={appointment.appointmentId}
-                      className="rounded-full w-full h-full object-cover"
-                    />
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {currentAppointments.map((appointment) => {
+              // Find the corresponding patient
+              const patient = patients.find(p => p.id === appointment.patientId);
+              // Find the corresponding hospital
+              const hospital = hospitals.find(h => h.hospitalId === appointment.hospitalId);
+
+              return (
+                <div
+                  key={appointment.appointmentId}
+                  className="relative bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between"
+                >
+                  {/* Left Part - Patient and Appointment Info */}
+                  <div className="flex flex-col space-y-1.5">
+                    {patient && (
+                      <h3 className="text-xl font-bold">{patient.name}</h3>
+                    )}
+                    <p className="text-sm font-semibold text-black">Hospital: {hospital ? hospital.hospitalName : 'N/A'}</p>
+                    <p className="text-sm font-semibold text-black">Appointment Date: {appointment.date}</p>
+                    <p className="text-sm font-semibold text-black">Appointment Time: {appointment.time}</p>
                   </div>
 
-                  {/* Hospital Information */}
-                  <div className="space-y-1.5"> 
-                    <h3 className="text-2xl font-bold">{appointment.appointmentId}</h3>
-                    <p className="text-sm font-semibold text-black">Hospital Location: {appointment.doctorId}</p>
-                    <p className="text-sm font-semibold text-black">Contact Info: {appointment.date}</p> 
-                    <p className="text-sm font-semibold text-black">Hospital Type: {appointment.time}</p> 
-                    <p className="text-sm font-semibold text-black">Importance: High</p>
-                    <p className="text-sm font-semibold italic text-black">Hospital ID: #{appointment.patientId}</p>
+                  {/* Actions - Positioned to the right corner */}
+                  <div className="absolute bottom-6 right-6">
+                    <button
+                      onClick={() => {
+                        navigate('/single-appointment', {
+                          state: { appointment, patient, hospital }, 
+                        });
+                      }}
+                      className="px-8 py-2 bg-green-500 text-white rounded-sm shadow text-center hover:bg-green-800 mb-8"
+                    >
+                      View Info
+                    </button>
                   </div>
                 </div>
-
-                {/* Right Part - Buttons */}
-                <div className="flex flex-col font-semibold space-y-4 items-center">
-                  <button className="px-16 py-2 bg-green-500 text-white rounded-sm shadow text-center hover:bg-green-800">
-                    View Info
-                  </button>
-                  <button className="px-8 py-2 bg-orange-500 text-white rounded-sm shadow text-center hover:bg-orange-800">
-                    Mark Attendance
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </main>

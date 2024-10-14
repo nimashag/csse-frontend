@@ -1,5 +1,4 @@
 import React from 'react';
-import {MdEventAvailable} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -31,13 +30,8 @@ const DocSidebar :React.FC= () => {
               </Link>
             </li>
             <li>
-              <Link to={`/doc-dashboard`} state={{ doctor }}>
-              <FaUserDoctor /> My Patients
-              </Link>
-            </li>
-            <li>
               <Link to={`/patient-appointment`} state={{ doctor }}>
-              <MdEventAvailable /> Patient Appointments
+              <FaUserDoctor /> Patient Appointments
               </Link>
             </li>
             <li>
@@ -45,12 +39,17 @@ const DocSidebar :React.FC= () => {
               <RiHospitalLine  /> My Hospitals
               </Link>
             </li>
+            <li>
+            <Link to={`/patient-report`} state={{ doctor }}>
+            <FaUserDoctor /> Patient Summary
+            </Link>
+          </li>
             </div>
 
             <div className='mt-40'>
             <h1 className='font-bold'>ACCOUNT</h1>
             <li>
-              <Link to={`/doc-dashboard`} state={{ doctor }}>
+              <Link to={`/doct-profile`} state={{ doctor }}>
               <CgProfile /> Profile
               </Link>
             </li>

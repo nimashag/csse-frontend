@@ -82,7 +82,7 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2">
                     Access patient profiles, view medical histories, and track ongoing treatments and progress.
                 </p>
-                <Link to={`/asigned-hos`} state={{ doctor }}>
+                <Link to={`/patient-appointment`} state={{ doctor }}>
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
                     Appointments
                   </button>
@@ -97,7 +97,7 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2">
                     Generate reports on patient care, treatment outcomes, and overall health analytics.
                 </p>
-                <Link to="">
+                <Link to={`/patient-report`} state={{ doctor }}>
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
                     Patient Reports
                   </button>
@@ -119,7 +119,7 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2 text-left">
                     Update and manage your personal information, credentials, and preferences to ensure your profile stays current and secure.
                 </p>
-                <Link to="">
+                <Link to={`/doct-profile`} state={{ doctor }}>
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-purple-800 transition-all duration-300">
                     Manage Profile
                   </button>
@@ -135,7 +135,7 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2 text-left">
                     View a comprehensive overview of patients, appointments, and activities to stay informed and organized in delivering efficient care.
                 </p>
-                <Link to="">
+                <Link to={`/patient-report`} state={{ doctor }}>
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-800 transition-all duration-300">
                     View Summary
                   </button>
