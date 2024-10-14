@@ -7,6 +7,7 @@ import recep3 from "../../assets/images/doctor/patreportimg.jpg";
 import docprof from "../../assets/images/doctor/docprof.jpg";
 import docsum from "../../assets/images/doctor/docsum.jpg";
 import RecepSidebar from "./RecepSidebar";
+import receppro from '../../assets/images/recep/recepprofilepic.png'
 
 const RecepDashboard: React.FC = () => {
   return (
@@ -40,7 +41,7 @@ const RecepDashboard: React.FC = () => {
               <FaBell size={18} />
             </button>
 
-            <img className="profile-image" alt="Recep" />
+            <img src={receppro} className="profile-image" alt="Recep" />
           </div>
         </header>
 

@@ -25,6 +25,21 @@ const RecepSidebar :React.FC = () => {
               </Link>
             </li>
             <li>
+              <Link to="/create-patient">
+              <BiClinic /> Register New Patients
+              </Link>
+            </li>
+            <li>
+              <Link to="/manage-patients">
+              <BiClinic /> Manage Patients
+              </Link>
+            </li>
+            <li>
+              <Link to="/patients-for-appointments">
+              <TbHomeHand /> Add Appointment
+              </Link>
+            </li>
+            <li>
               <Link to="/clinics">
               <TbHomeHand /> View Clinics
               </Link>
