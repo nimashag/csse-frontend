@@ -119,49 +119,47 @@ const AssignedHospital: React.FC = () => {
         </header>
 
         <div className="dashboard-container">
-  <div className="mt-6 space-y-6">
-    {currentHospitals.map((hospital, idx) => (
-      <div
-        key={hospital.hospitalId}
-        className="bg-white shadow-lg rounded-lg p-6 flex justify-between items-center"
-      >
-        {/* Left Part - Hospital Image and Basic Info */}
-        <div className="flex items-center space-x-6">
-          {/* Hospital Image */}
-          <div className="w-24 h-24">
-            <img
-              src={hospitalImages[idx % hospitalImages.length] || "https://i.pinimg.com/enabled/564x/a8/a1/07/a8a107e2a9ae0ef0e3c77a0dd76b73e7.jpg"} 
-              alt={hospital.hospitalName}
-              className="rounded-full w-full h-full object-cover"
-            />
-          </div>
+          <div className="mt-6 space-y-6">
+            {currentHospitals.map((hospital, idx) => (
+              <div
+                key={hospital.hospitalId}
+                className="bg-white shadow-lg rounded-lg p-6 flex justify-between items-center"
+              >
+                {/* Left Part - Hospital Image and Basic Info */}
+                <div className="flex items-center space-x-6">
+                  {/* Hospital Image */}
+                  <div className="w-24 h-24">
+                    <img
+                      src={hospitalImages[idx % hospitalImages.length] || "https://i.pinimg.com/enabled/564x/a8/a1/07/a8a107e2a9ae0ef0e3c77a0dd76b73e7.jpg"} 
+                      alt={hospital.hospitalName}
+                      className="rounded-full w-full h-full object-cover"
+                    />
+                  </div>
 
-          {/* Hospital Information */}
-          <div className="space-y-1.5"> 
-            <h3 className="text-2xl font-bold">{hospital.hospitalName}</h3>
-            <p className="text-0.3xl font-semibold text-black">Hospital Location: {hospital.area}</p>
-            <p className="text-0.3xl font-semibold text-black">Contact Info: {hospital.contactNumber}</p> 
-            <p className="text-0.3xl font-semibold text-black">Hospital Type: {hospital.hospitalType}</p> 
-            <p className="text-0.3xl font-semibold text-black">Importance: High</p>
-            <p className="text-sm font-semibold italic text-black">Hospital ID:#{hospital.hospitalId}</p>
+                  {/* Hospital Information */}
+                  <div className="space-y-1.5"> 
+                    <h3 className="text-2xl font-bold">{hospital.hospitalName}</h3>
+                    <p className="text-0.3xl font-semibold text-black">Hospital Location: {hospital.area}</p>
+                    <p className="text-0.3xl font-semibold text-black">Contact Info: {hospital.contactNumber}</p> 
+                    <p className="text-0.3xl font-semibold text-black">Hospital Type: {hospital.hospitalType}</p> 
+                    <p className="text-0.3xl font-semibold text-black">Importance: High</p>
+                    <p className="text-sm font-semibold italic text-black">Hospital ID:#{hospital.hospitalId}</p>
+                  </div>
+                </div>
+
+                {/* Right Part - Buttons */}
+                <div className="flex flex-col font-semibold space-y-4 items-center">
+                  <button className="px-16 py-2  bg-green-500 text-white rounded-sm shadow text-center hover:bg-green-800">
+                    View Info
+                  </button>
+                  <button className="px-8 py-2 bg-orange-500 text-white rounded-sm shadow text-center hover:bg-orange-800">
+                    Mark Attendance
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Right Part - Buttons */}
-        <div className="flex flex-col font-semibold space-y-4 items-center">
-          <button className="px-16 py-2  bg-green-500 text-white rounded-sm shadow text-center hover:bg-green-800">
-            View Info
-          </button>
-          <button className="px-8 py-2 bg-orange-500 text-white rounded-sm shadow text-center hover:bg-orange-800">
-            Mark Attendance
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-
       </main>
     </div>
   );
