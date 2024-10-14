@@ -64,8 +64,8 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2 ">
                     Manage hospital information, add or update hospital details, and track the facilities available.
                 </p>
-                <Link to="">
-                  <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
+                <Link to={`/asigned-hos`} state={{ doctor }}>
+                  <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800 transition-all duration-300">
                     View Hospitals
                   </button>
                 </Link>
@@ -79,9 +79,9 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2">
                     Access patient profiles, view medical histories, and track ongoing treatments and progress.
                 </p>
-                <Link to="">
+                <Link to={`/asigned-hos`} state={{ doctor }}>
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
-                    Check Reports
+                    Appointments
                   </button>
                 </Link>
               </div>

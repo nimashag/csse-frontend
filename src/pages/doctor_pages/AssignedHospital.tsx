@@ -1,8 +1,15 @@
 import React from 'react'
 import DocSidebar from './DocSidebar'
 import { FaBell, FaSearch } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const AssignedHospital :React.FC= () => {
+
+  const location = useLocation();
+  const doctor = location.state?.doctor;
+  console.log(`logged in doctor: ${JSON.stringify(doctor)}`);
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
