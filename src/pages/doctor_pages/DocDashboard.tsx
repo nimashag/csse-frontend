@@ -8,6 +8,7 @@ import mypatimg from '../../assets/images/doctor/mypatimg.jpg'
 import patreport from '../../assets/images/doctor/patreportimg.jpg'
 import docprof from '../../assets/images/doctor/docprof.jpg'
 import docsum from '../../assets/images/doctor/docsum.jpg'
+import docprofile from '../../assets/images/doctor/docaimg.png'
 
 const DocDashboard :React.FC= () => {
 
@@ -46,6 +47,8 @@ const DocDashboard :React.FC= () => {
             <button className="notification-icon mr-4">
               <FaBell size={18} />
             </button>
+
+            <img src={docprofile} className="profile-image" alt="Doctor" />
           </div>
         </header>
 

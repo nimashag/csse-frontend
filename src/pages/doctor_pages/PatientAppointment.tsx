@@ -1,6 +1,7 @@
 import React from 'react'
 import DocSidebar from './DocSidebar'
 import { FaBell, FaSearch } from "react-icons/fa";
+import docprofile from '../../assets/images/doctor/docaimg.png'
 
 const PatientAppointment :React.FC= () => {
   return (
@@ -35,7 +36,7 @@ const PatientAppointment :React.FC= () => {
               <FaBell size={18} />
             </button>
 
-            <img  className="profile-image" alt="Doctor" />
+            <img src={docprofile} className="profile-image" alt="Doctor" />
           </div>
         </header>
 
