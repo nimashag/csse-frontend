@@ -36,6 +36,11 @@ const SampleSidebarLab :React.FC= () => {
               </Link>
             </li>
             <li>
+              <Link to={`/lab-assign-op`} state={{ labtech }}>
+              <MdEventAvailable /> My Lab Operations
+              </Link>
+            </li>
+            <li>
               <Link to={`/labshow-patients`} state={{ labtech }}>
               <MdEventAvailable /> Show All Patients 
               </Link>
