@@ -1,44 +1,67 @@
 import { create } from 'zustand';
 import { User } from 'firebase/auth';
 
-// Define the type for the store's state and actions
 interface AuthState {
   user: User | null;
-  name?: string; // Optional
-  address?: string; // Optional
-  age?: number; // Optional
-  gender?: string; // Optional
-  contactNumber?: string; // Optional
-  emergencyDial?: string; // Optional
-  userType: string; // Keep as required since it defaults to 'patient'
+  userProfile?: Partial<Omit<AuthState, 'user' | 'setUser' | 'setUserProfile' | 'logOutUser'>>;
+  name?: string;
+  address?: string;
+  age?: number;
+  gender?: string;
+  profileImage?: string;
+  userType: string;
   setUser: (user: User | null) => void;
-  setUserProfile: (profile: Partial<Omit<AuthState, 'user' | 'userType'>>) => void; // Set profile fields, excluding user and userType
+  setUserProfile: (profile: Partial<Omit<AuthState, 'user' | 'userType'>>) => void;
   logOutUser: () => void;
 }
 
-// Store user data and profile in Zustand
+const loadUserProfile = () => {
+  const userProfile = localStorage.getItem("userProfile");
+  return userProfile ? JSON.parse(userProfile) : {};
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
+  userProfile: loadUserProfile(), // Load userProfile from local storage
   name: '',
   address: '',
   age: 0,
   gender: '',
-  contactNumber: '',
-  emergencyDial: '',
+  profileImage: '',
   userType: 'patient',
+  
+  setUser: (user: User | null) => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
 
-  setUser: (user: User | null) => set(() => ({ user })),
+    set(() => ({ user }));
+  },
 
-  setUserProfile: (profile) => set((state) => ({ ...state, ...profile })), // Merging profile data
+  setUserProfile: (profile) => {
+    const updatedProfile = { ...profile };
+    localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
 
-  logOutUser: () => set(() => ({
-    user: null,
-    name: '',
-    address: '',
-    age: 0,
-    gender: '',
-    contactNumber: '',
-    emergencyDial: '',
-    userType: 'patient',
-  })),
+    set((state) => ({
+      userProfile: { ...state.userProfile, ...updatedProfile },
+    }));
+  },
+
+  logOutUser: () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("userProfile");
+
+    set(() => ({
+      user: null,
+      userProfile: {},
+      name: '',
+      address: '',
+      age: 0,
+      gender: '',
+      profileImage: '',
+      userType: 'patient',
+    }));
+  },
 }));

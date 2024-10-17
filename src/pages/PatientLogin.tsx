@@ -1,10 +1,9 @@
-// LoginSignup.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { emailSignIn, emailSignUp, googleSignIn } from "../firebase/auth"; // Firebase functions
 import { useAuthStore } from "@/store/AuthStore"; // Zustand for global state
 import { db } from "../firebase/firebase"; // Firestore database import
-import { doc, setDoc } from "firebase/firestore"; // Firestore functions
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore functions
 import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify for notifications
 import 'react-toastify/dist/ReactToastify.css'; // Toast styles
 
@@ -12,7 +11,7 @@ const LoginSignup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isSignup, setIsSignup] = useState<boolean>(false); // Toggle between login/signup
-  const { setUser, setUserProfile } = useAuthStore(); // Zustand store to set user
+  const { setUser, setUserProfile } = useAuthStore(); // Zustand store to set user and profile
   const navigate = useNavigate(); // Navigation hook to redirect
 
   // State for additional fields for profile during signup
@@ -29,8 +28,8 @@ const LoginSignup: React.FC = () => {
   const handleEmailAuth = async () => {
     const result = isSignup ? await emailSignUp(email, password) : await emailSignIn(email, password);
     if (result?.user) {
+      const { uid, email: userEmail } = result.user;
       setUser(result.user); // Store user info in Zustand store
-      setUserProfile({ name, address, age, gender, email: result.user.email, contactNumber, emergencyDial, userType, profileImage }); // Save profile to Zustand
 
       if (isSignup) {
         // Prepare patient profile data to store in Firestore
@@ -39,24 +38,38 @@ const LoginSignup: React.FC = () => {
           address,
           age,
           gender,
-          email: result.user.email,
+          email: userEmail,
           contactNumber,
           emergencyDial,
-          type: userType, // User type is 'patient'
+          userType, // User type is 'patient'
           profileImage, // Default dummy image
         };
 
         // Save profile to Firestore in 'users' collection
-        await setDoc(doc(db, "users", result.user.uid), patientProfile);
+        await setDoc(doc(db, "users", uid), patientProfile);
+
+        // Set profile to Zustand store
+        setUserProfile(patientProfile);
+
         setIsSignup(false); // Reset to login form after successful signup
         toast.success("Signed up successfully! Please log in.");
       } else {
+        // On login, retrieve the existing profile data from Firestore
+        const userRef = doc(db, "users", uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userProfileData = userDoc.data();
+          // Set the existing profile to Zustand store
+          setUserProfile(userProfileData);
+        }
+
         // Successful login flow
         toast.success("Logged in successfully!");
         setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
       }
     } else {
-      toast.error(result.error?.message || "An error occurred");
+      toast.error(result?.error?.message || "An error occurred");
     }
   };
 
@@ -64,12 +77,32 @@ const LoginSignup: React.FC = () => {
   const handleGoogleAuth = async () => {
     const result = await googleSignIn();
     if (result?.user) {
+      const { uid, email: userEmail } = result.user;
       setUser(result.user); // Set user info in Zustand store
-      setUserProfile({ email: result.user.email }); // Set user profile data if needed
+
+      // Check if the user profile already exists in Firestore
+      const userRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        const userProfileData = userDoc.data();
+        // Set existing profile data in Zustand store
+        setUserProfile(userProfileData);
+      } else {
+        // If profile does not exist, create a new one with basic data
+        const defaultProfile = {
+          email: userEmail,
+          userType: "patient", // Default userType
+          profileImage, // Default dummy profile image
+        };
+        await setDoc(userRef, defaultProfile);
+        setUserProfile(defaultProfile); // Set new profile in Zustand store
+      }
+
       toast.success("Logged in with Google successfully!");
       setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
     } else {
-      toast.error(result.error?.message || "An error occurred");
+      toast.error(result?.error?.message || "An error occurred");
     }
   };
 

@@ -1,37 +1,44 @@
-import React from "react";
-import { useAuthStore } from "@/store/AuthStore";
-import { useNavigate } from "react-router-dom";
-import ProfilePage from "@/components/Profile";
+import React, { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import ProfilePage from "../components/Profile";
+import DashboardDetails from "../components/DashboardDetails"; // Your dashboard details component
+import AddConsultation from "../components/AddConsultation";  // Replace with your actual components
+import CreateSchedules from "../components/CreateSchedules";
+import ViewHealthReports from "../components/ViewHealthReports";
+import NotificationPanel from "../components/NotificationPanel";
 
 const Dashboard: React.FC = () => {
-  const { user, logOutUser } = useAuthStore();
-  const navigate = useNavigate();
+  const [navigationChoice, setNavigationChoice] = useState("dashboard");
 
-  const handleLogout = () => {
-    logOutUser(); // Clear the Zustand store
-    alert("Logged out successfully!");
-    navigate("/"); // Redirect to login page after logout
+  const handleNavigationChoice = (choice: string) => {
+    setNavigationChoice(choice);
   };
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
+  // Conditionally render components based on navigation choice
+  const renderSection = () => {
+    switch (navigationChoice) {
+      case "dashboard":
+        return <DashboardDetails />;
+      case "add-consultation":
+        return <AddConsultation />;
+      case "create-schedules":
+        return <CreateSchedules />;
+      case "view-health-reports":
+        return <ViewHealthReports />;
+      case "notification-panel":
+        return <NotificationPanel />;
+      case "profile":
+        return <ProfilePage />;
+      default:
+        return <DashboardDetails />;
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4">Welcome, {user.displayName || "User"}!</h2>
-        <p className="text-lg">Email: {user.email}</p>
-        {/* Add any other user details here */}
-        
-        <button
-          className="mt-6 py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
-      </div>
-      <ProfilePage />
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Pass handleNavigationChoice to Sidebar */}
+      <Sidebar handleNavigationChoice={handleNavigationChoice} activeChoice={navigationChoice} />
+      <div className="flex-1 p-6">{renderSection()}</div>
     </div>
   );
 };
