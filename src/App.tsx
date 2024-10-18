@@ -32,6 +32,7 @@ import AddWard from "./pages/wardhead_pages/AddWard.tsx";
 import ViewClinic from "./pages/receptionist_pages/ViewClinic.tsx";
 import AddToClinic from "./pages/receptionist_pages/AddToClinic.tsx";
 import ViewPatient from "./pages/receptionist_pages/ViewPatient.tsx";
+import AddNewClinic from "./pages/receptionist_pages/AddNewClinic.tsx";
 
 function App() {
   return (
@@ -69,6 +70,10 @@ function App() {
           <Route path="/all-labroomsinfo" element={<AllLabRooms />} />
           <Route path="/all-operations" element={<ManageOperations />} />
 
+
+          {/* Rusiru gonna design these */}
+          {/* take a look at the dashboard as well ma boy :) */}
+
           {/* Ward Head Routes */}
           <Route path="/wh-dashboard" element={<WHDashboard />} />
           <Route path="/wh-mpatients" element={<WHManagePatients />} />
@@ -82,9 +87,7 @@ function App() {
           <Route path="/clinics" element={<ViewClinic />} />
           <Route path="/add-to-clinic/:id" element={<AddToClinic />} />
           <Route path="/patient/:id" element={<ViewPatient />} />
-
-          
-
+          <Route path="/add-clinic" element={<AddNewClinic />} />
         </Routes>
       </Router>
     </SnackbarProvider>
