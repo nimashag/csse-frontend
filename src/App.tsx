@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { SnackbarProvider } from "notistack";
-import LoginSignup from "./pages/PatientLogin";
-import Dashboard from "./pages/PatientDashboard";
-import AdminLogin from "./pages/AdminLogins";
+import LoginSignup from './pages/PatientLogin'
+import Dashboard from './pages/PatientDashboard'
+import AdminLogin from './pages/AdminLogins'
+import MinistryDashboard from './pages/ministry_pages/MinistryDashboard.tsx';
 import ManageHospitals from "./pages/ministry_pages/hospitals/ManageHospitals.tsx";
 import AddHospital from "./pages/ministry_pages/hospitals/AddHospital.tsx";
 import UpdateHospital from "./pages/ministry_pages/hospitals/UpdateHospital.tsx";
@@ -43,14 +44,16 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/admin-login" element={<AdminLogin />} />
 
+          {/* Ministry Routes - dashboard */}
+          <Route path='/ministry-dashboard' element={<MinistryDashboard/>}/>
           {/* Ministry Routes - hospitals */}
-          <Route path="/manage-hospitals" element={<ManageHospitals />} />
-          <Route path="/add-hospital" element={<AddHospital />} />
-          <Route path="/update-hospital/:id" element={<UpdateHospital />} />
+          <Route path='/manage-hospitals' element={<ManageHospitals/>}/>
+          <Route path='/add-hospital' element={<AddHospital/>}/>
+          <Route path="/update-hospital/:id" element={<UpdateHospital/>}/>
           {/* Ministry Routes - doctors */}
-          <Route path="/manage-doctors" element={<ManageDoctors />} />
-          <Route path="/add-doctor" element={<AddDoctor />} />
-          <Route path="/update-doctor/:id" element={<UpdateDoctor />} />
+          <Route path='/manage-doctors' element={<ManageDoctors/>}/>
+          <Route path='/add-doctor' element={<AddDoctor/>}/>
+          <Route path="/update-doctor/:id" element={<UpdateDoctor/>}/>
 
           {/* Lab Tech Routes */}
           <Route path="/lab-manage" element={<LabManage />} />
