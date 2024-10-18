@@ -6,6 +6,7 @@ import { db } from "../firebase/firebase"; // Firestore database import
 import { doc, setDoc, getDoc } from "firebase/firestore"; // Firestore functions
 import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify for notifications
 import 'react-toastify/dist/ReactToastify.css'; // Toast styles
+import axios from 'axios'; // For making HTTP requests
 
 const LoginSignup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -21,7 +22,7 @@ const LoginSignup: React.FC = () => {
   const [gender, setGender] = useState<string>("");
   const [contactNumber, setContactNumber] = useState<string>("");
   const [emergencyDial, setEmergencyDial] = useState<string>("");
-  const userType = "patient"; // UserType set as 'patient' by default
+  const userType = "patient"; // UserType set as 'patient'
   const profileImage = "/dummy-profile.png"; // Default profile image
 
   // Handle Email Sign Up or Sign In
@@ -31,22 +32,31 @@ const LoginSignup: React.FC = () => {
       const { uid, email: userEmail } = result.user;
       setUser(result.user); // Store user info in Zustand store
 
-      if (isSignup) {
-        // Prepare patient profile data to store in Firestore
-        const patientProfile = {
-          name,
-          address,
-          age,
-          gender,
-          email: userEmail,
-          contactNumber,
-          emergencyDial,
-          userType, // User type is 'patient'
-          profileImage, // Default dummy image
-        };
+      const patientProfile = {
+        name,
+        address,
+        age,
+        gender,
+        email: userEmail,
+        contactNumber,
+        emergencyDial,
+        userType, // User type is 'patient'
+        profileImage, // Default dummy image
+      };
 
+      if (isSignup) {
         // Save profile to Firestore in 'users' collection
         await setDoc(doc(db, "users", uid), patientProfile);
+
+        // Send the data to your Spring Boot backend for MongoDB storage
+        try {
+          const response = await axios.post('http://localhost:8080/api/patients', patientProfile);
+          toast.success("Patient created successfully in MongoDB!");
+          console.log(response.data); // Log the response from your backend
+        } catch (error) {
+          toast.error("Failed to save data to MongoDB");
+          console.error(error);
+        }
 
         // Set profile to Zustand store
         setUserProfile(patientProfile);
@@ -64,6 +74,16 @@ const LoginSignup: React.FC = () => {
           setUserProfile(userProfileData);
         }
 
+        // Send the login data to your backend for MongoDB operations
+        // try {
+        //   const response = await axios.post('http://localhost:8080/api/patients/login', { email: userEmail });
+        //   toast.success("Logged in and data fetched from MongoDB!");
+        //   console.log(response.data); // You can store this data in Zustand if needed
+        // } catch (error) {
+        //   toast.error("Failed to retrieve data from MongoDB");
+        //   console.error(error);
+        // }
+
         // Successful login flow
         toast.success("Logged in successfully!");
         setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
@@ -80,23 +100,29 @@ const LoginSignup: React.FC = () => {
       const { uid, email: userEmail } = result.user;
       setUser(result.user); // Set user info in Zustand store
 
-      // Check if the user profile already exists in Firestore
       const userRef = doc(db, "users", uid);
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
         const userProfileData = userDoc.data();
-        // Set existing profile data in Zustand store
-        setUserProfile(userProfileData);
+        setUserProfile(userProfileData); // Set existing profile data in Zustand store
       } else {
-        // If profile does not exist, create a new one with basic data
         const defaultProfile = {
           email: userEmail,
-          userType: "patient", // Default userType
-          profileImage, // Default dummy profile image
+          userType: "patient",
+          profileImage,
         };
         await setDoc(userRef, defaultProfile);
-        setUserProfile(defaultProfile); // Set new profile in Zustand store
+        setUserProfile(defaultProfile);
+      }
+
+      // Save or update Google login data in MongoDB
+      try {
+        await axios.post('http://localhost:8080/api/patients/google-login', { email: userEmail });
+        toast.success("Google login and MongoDB sync successful!");
+      } catch (error) {
+        toast.error("Failed to sync Google login data with MongoDB");
+        console.error(error);
       }
 
       toast.success("Logged in with Google successfully!");

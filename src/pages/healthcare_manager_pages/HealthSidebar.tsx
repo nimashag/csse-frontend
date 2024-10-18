@@ -1,12 +1,15 @@
 import React from 'react';
-import {MdEventAvailable} from 'react-icons/md';
+import {MdOutlineBedroomChild} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
-import { FaUserDoctor } from "react-icons/fa6";
-import { RiHome3Line, RiHospitalLine  } from "react-icons/ri";
+import { FaUserDoctor, FaPersonBooth } from "react-icons/fa6";
+import { RiHome3Line  } from "react-icons/ri";
 import '../lab_tech_pages/SampleSidebarLab.css';
-
+import { BsPersonVideo3 } from "react-icons/bs";
+import { ImLab } from "react-icons/im";
+import { FaHandHoldingMedical } from "react-icons/fa";
+import { TbReportSearch } from "react-icons/tb";
 
 const HealthSidebar :React.FC= () => {
   return (
@@ -32,32 +35,32 @@ const HealthSidebar :React.FC= () => {
             </li>
             <li>
               <Link to="/all-receptionistinfo">
-              <MdEventAvailable /> Manage Receptionist
+              <BsPersonVideo3 /> Manage Receptionist
               </Link>
             </li>
             <li>
               <Link to="/add-labinfo">
-              <RiHospitalLine  /> Manage Lab Techs
+              <FaPersonBooth /> Manage Lab Techs
               </Link>
             </li>
             <li>
               <Link to="/all-wardroomsinfo">
-              <FaUserDoctor /> Manage Ward Rooms
+              <MdOutlineBedroomChild /> Manage Ward Rooms
               </Link>
             </li>
             <li>
               <Link to="/all-labroomsinfo">
-              <MdEventAvailable /> Manage Lab Rooms
+              <ImLab /> Manage Lab Rooms
               </Link>
             </li>
             <li>
               <Link to="/all-operations">
-              <RiHospitalLine  /> Manage Operations
+              <FaHandHoldingMedical  /> Manage Operations
               </Link>
             </li>
             <li>
               <Link to="">
-              <RiHospitalLine  /> Staff Reports
+              <TbReportSearch  /> Staff Reports
               </Link>
             </li>
             </div>

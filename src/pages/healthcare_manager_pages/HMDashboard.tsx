@@ -78,7 +78,7 @@ const HMDashboard :React.FC = () => {
                   Add Ward Head
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                Create a new ward head responsible for managing the operations, staff, and patient care in a specific ward within the hospital.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-600 transition-all duration-300">
@@ -94,7 +94,7 @@ const HMDashboard :React.FC = () => {
                     Manage Ward Head
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                Update, and manage the details of existing ward heads, including their assignments, performance, and roles in the hospital.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-600 transition-all duration-300">
@@ -111,10 +111,10 @@ const HMDashboard :React.FC = () => {
               <img src={recep1} className="w-1/5" />
               <div className="ml-5">
                 <h3 className="text-xl font-semibold text-black text-left">
-                  Add Receptionist
+                    Add Receptionist
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                    Register a new receptionist for handling front desk duties such as patient check-ins and general inquiries.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-red-600 transition-all duration-300">
@@ -130,7 +130,7 @@ const HMDashboard :React.FC = () => {
                     Manage Receptionist
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                    Monitor and update the roles and responsibilities of existing receptionists and task assignments.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-red-600 transition-all duration-300">
@@ -150,7 +150,7 @@ const HMDashboard :React.FC = () => {
                   Add Lab Technician
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                  Register a new lab technician responsible for conducting diagnostic tests and ensuring accurate test results.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-600 transition-all duration-300">
@@ -166,7 +166,7 @@ const HMDashboard :React.FC = () => {
                     Manage Lab Technician
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                    Update, and manage the details and performance of existing lab technicians, including their assigned labs and duties.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-600 transition-all duration-300">
@@ -188,10 +188,10 @@ const HMDashboard :React.FC = () => {
               <img src={wardroom1} className="w-1/5" />
               <div className="ml-5">
                 <h3 className="text-xl font-semibold text-black text-left">
-                  Add Ward Rooms
+                    Add Ward Rooms
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                    Add new rooms within a specific ward for patient allocation, ensuring appropriate facilities for care and recovery.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-cyan-400 transition-all duration-300">
@@ -207,7 +207,7 @@ const HMDashboard :React.FC = () => {
                     Manage Ward Rooms
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                    Monitor and update the availability, occupancy, and details of ward rooms to resource allocation.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-cyan-400 transition-all duration-300">
@@ -224,10 +224,10 @@ const HMDashboard :React.FC = () => {
               <img src={labroom1} className="w-1/5" />
               <div className="ml-5">
                 <h3 className="text-xl font-semibold text-black text-left">
-                  Add Labs
+                    Add Labs
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                    Register a new laboratory facility within the hospital for diagnostic testing and research, ensuring proper equipment.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-purple-600 transition-all duration-300">
@@ -243,7 +243,7 @@ const HMDashboard :React.FC = () => {
                     Manage Labs
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                    Update the details of existing labs, including equipment status, lab technician assignments, and operational efficiency.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-purple-600 transition-all duration-300">
@@ -260,10 +260,10 @@ const HMDashboard :React.FC = () => {
               <img src={opr1} className="w-1/5" />
               <div className="ml-5">
                 <h3 className="text-xl font-semibold text-black text-left">
-                  Add Operations
+                    Add Operations
                 </h3>
                 <p className="mt-2 text-left">
-                Generate detailed reports on hospital staff to streamline workforce management and ensure efficient hospital operations.
+                    Schedule and register new surgical procedures, resources required for the operation.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-400 transition-all duration-300">
@@ -279,7 +279,7 @@ const HMDashboard :React.FC = () => {
                     Manage Operations
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of staff and activities to stay informed and organized in delivering efficient care.
+                    Update the details of scheduled operations, including timing, staff assignments, and operative care requirements.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-400 transition-all duration-300">
