@@ -7,13 +7,15 @@ const AddDoctor: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        specialization: ''
     });
 
     const [errors, setErrors] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        specialization: ''
     });
 
     const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
@@ -44,6 +46,8 @@ const AddDoctor: React.FC = () => {
             }
         } else if (name === 'password' && !value) {
             error = 'Password is required';
+        } else if (name === 'specialization' && !value) {  // Specialization validation
+            error = 'Specialization is required';
         }
 
         return error;
@@ -77,7 +81,7 @@ const AddDoctor: React.FC = () => {
         if (!valid) return; // Prevent submission if validation fails
 
         try {
-            const response = await fetch(`${config.backend_url}/api/users/`, {
+            const response = await fetch(`${config.backend_url}/api/doctors/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,6 +91,7 @@ const AddDoctor: React.FC = () => {
                     email: formData.email,
                     password: formData.password,
                     userType: 'DOCTOR',
+                    specialization: formData.specialization,
                 }),
             });
 
@@ -97,7 +102,7 @@ const AddDoctor: React.FC = () => {
                 setTimeout(() => {
                     setNotification(null);
                     navigate('/manage-doctors');
-                }, 5000);
+                }, 3000);
             } else {
                 throw new Error('Failed to add doctor');
             }
@@ -106,7 +111,7 @@ const AddDoctor: React.FC = () => {
             setNotification({ message: 'Failed to add doctor. Please try again later.', type: 'error' });
             setTimeout(() => {
                 setNotification(null);
-            }, 5000);
+            }, 3000);
         }
     };
 
@@ -150,6 +155,21 @@ const AddDoctor: React.FC = () => {
                                     required
                                 />
                                 {errors.name && <span className="text-red-500">{errors.name}</span>}
+                            </div>
+
+                            <div className="form-group">
+                                <label>Specialization</label>
+                                <input
+                                    type="text"
+                                    name="specialization"
+                                    value={formData.specialization}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-input ${errors.specialization ? 'border-red-500' : ''}`}
+                                    placeholder="Enter Specialization"
+                                    required
+                                />
+                                {errors.specialization && <span className="text-red-500">{errors.specialization}</span>}
                             </div>
 
                             <div className="form-group">

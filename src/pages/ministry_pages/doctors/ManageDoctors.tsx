@@ -9,7 +9,7 @@ interface Doctor {
     id: string;
     name: string;
     email: string;
-    userType: string;
+    specialization: string;
 }
 
 const ManageDoctors: React.FC = () => {
@@ -17,36 +17,35 @@ const ManageDoctors: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [doctorsPerPage] = useState(10);
     const [totalDoctors, setTotalDoctors] = useState(0);
-    const [deleteDoctorId, setDeleteDoctorId] = useState<string | null>(null); // State to store doctor ID to delete
-    const [showDeleteModal, setShowDeleteModal] = useState(false); // State to show/hide the modal
+    const [deleteDoctorId, setDeleteDoctorId] = useState<string | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDoctors = async () => {
-            // const response = await fetch(`${config.backend_url}/api/users?userType=DOCTOR`); // TODO: implement filtering by userType in backend
-            const response = await fetch(`${config.backend_url}/api/users`);
+            const response = await fetch(`${config.backend_url}/api/doctors`);
             const data = await response.json();
             setDoctors(data);
-            setTotalDoctors(data.length); // Set the total doctors count
+            setTotalDoctors(data.length);
         };
         fetchDoctors();
     }, []);
 
     const confirmDelete = (doctorId: string) => {
-        setDeleteDoctorId(doctorId);  // Set the doctor ID for deletion
-        setShowDeleteModal(true);  // Show the confirmation modal
+        setDeleteDoctorId(doctorId);
+        setShowDeleteModal(true);
     };
 
     const handleDelete = async () => {
         if (deleteDoctorId) {
             try {
-                const response = await fetch(`${config.backend_url}/api/users/${deleteDoctorId}`, {
+                const response = await fetch(`${config.backend_url}/api/doctors/${deleteDoctorId}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
                     setDoctors(doctors.filter(doctor => doctor.id !== deleteDoctorId));
-                    setShowDeleteModal(false);  // Close the modal after deletion
+                    setShowDeleteModal(false);
                 } else {
                     alert('Failed to delete doctor.');
                 }
@@ -57,7 +56,7 @@ const ManageDoctors: React.FC = () => {
     };
 
     const handleCloseModal = () => {
-        setShowDeleteModal(false);  // Close modal without deleting
+        setShowDeleteModal(false);
     };
 
     const indexOfLastDoctor = currentPage * doctorsPerPage;
@@ -98,8 +97,8 @@ const ManageDoctors: React.FC = () => {
                         <thead>
                         <tr>
                             <th className="border border-gray-300 px-4 py-2">Name</th>
+                            <th className="border border-gray-300 px-4 py-2">Specialization</th>
                             <th className="border border-gray-300 px-4 py-2">Email</th>
-                            <th className="border border-gray-300 px-4 py-2">User Type</th>
                             <th className="border border-gray-300 px-4 py-2">Actions</th>
                         </tr>
                         </thead>
@@ -107,8 +106,8 @@ const ManageDoctors: React.FC = () => {
                         {currentDoctors.map(doctor => (
                             <tr key={doctor.id}>
                                 <td className="border border-gray-300 px-4 py-2">{doctor.name}</td>
+                                <td className="border border-gray-300 px-4 py-2">{doctor.specialization}</td>
                                 <td className="border border-gray-300 px-4 py-2">{doctor.email}</td>
-                                <td className="border border-gray-300 px-4 py-2">{doctor.userType}</td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     <button
                                         onClick={() => navigate(`/update-doctor/${doctor.id}`)}
@@ -130,7 +129,7 @@ const ManageDoctors: React.FC = () => {
                 </div>
 
                 <div className="mt-4 flex justify-center">
-                    {Array.from({length: Math.ceil(totalDoctors / doctorsPerPage)}, (_, index) => (
+                    {Array.from({ length: Math.ceil(totalDoctors / doctorsPerPage) }, (_, index) => (
                         <button
                             key={index + 1}
                             onClick={() => paginate(index + 1)}
