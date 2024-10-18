@@ -6,7 +6,6 @@ import AddConsultation from "../components/AddConsultation";  // Replace with yo
 import CreateSchedules from "../components/CreateSchedules";
 import ViewHealthReports from "../components/ViewHealthReports";
 import NotificationPanel from "../components/NotificationPanel";
-
 const Dashboard: React.FC = () => {
   const [navigationChoice, setNavigationChoice] = useState("dashboard");
 
