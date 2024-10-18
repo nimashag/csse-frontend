@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import MinistrySidebar from '../MinistrySidebar.tsx';
-import { FaSearch } from 'react-icons/fa';
+import {
+    FaSearch,
+    FaEdit,
+    FaTrashAlt,
+    FaHospital,
+    FaUnlink,
+    FaPlus,
+    FaPlusCircle,
+    FaMinusCircle,
+    FaBan, FaUserMinus
+} from 'react-icons/fa'; // Import icons
 import { Link, useNavigate } from 'react-router-dom';
 import config from "../../../constants/config";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import AssignHospitalModal from './AssignHospitalModal';
-import UnassignHospitalModal from './UnassignHospitalModal'; // Import the new UnassignHospitalModal
+import UnassignHospitalModal from './UnassignHospitalModal';
+import {FaPersonCircleMinus, FaPersonCirclePlus, FaPlusMinus, FaSquareMinus, FaUserPen} from "react-icons/fa6"; // Import the new UnassignHospitalModal
 
 interface Doctor {
     id: string;
@@ -152,31 +163,37 @@ const ManageDoctors: React.FC = () => {
                                 <td className="border border-gray-300 px-4 py-2">{doctor.name}</td>
                                 <td className="border border-gray-300 px-4 py-2">{doctor.specialization}</td>
                                 <td className="border border-gray-300 px-4 py-2">{doctor.email}</td>
-                                <td className="border border-gray-300 px-4 py-2">{doctor.workingHospitals.length}</td>
                                 <td className="border border-gray-300 px-4 py-2">
-                                    <button
-                                        onClick={() => navigate(`/update-doctor/${doctor.id}`)}
-                                        className="text-blue-500 hover:underline"
-                                    >
-                                        Update
-                                    </button>
-                                    <button
-                                        onClick={() => confirmDelete(doctor.id)}
-                                        className="ml-4 text-red-500 hover:underline"
-                                    >
-                                        Delete
-                                    </button>
+                                    {doctor.workingHospitals.length}
                                     <button
                                         onClick={() => handleAssignHospital(doctor.id)}
                                         className="ml-4 text-green-500 hover:underline"
+                                        title="Assign Hospital"
                                     >
-                                        Assign Hospital
+                                        <FaPlusCircle size="20px"/>
                                     </button>
                                     <button
                                         onClick={() => handleUnassignHospitalClick(doctor.id)}
                                         className="ml-2 text-yellow-500 hover:underline"
+                                        title="Unassign Hospital"
                                     >
-                                        Unassign Hospital
+                                        <FaMinusCircle size="20px"/>
+                                    </button>
+                                </td>
+                                <td className="border border-gray-300 px-4 py-2">
+                                    <button
+                                        onClick={() => navigate(`/update-doctor/${doctor.id}`)}
+                                        className="text-blue-500 hover:underline"
+                                        title="Update Doctor"
+                                    >
+                                        <FaUserPen size="20px"/>
+                                    </button>
+                                    <button
+                                        onClick={() => confirmDelete(doctor.id)}
+                                        className="ml-4 text-red-500 hover:underline"
+                                        title="Delete Doctor"
+                                    >
+                                        <FaUserMinus size="20px"/>
                                     </button>
                                 </td>
                             </tr>
@@ -186,7 +203,7 @@ const ManageDoctors: React.FC = () => {
                 </div>
 
                 <div className="mt-4 flex justify-center">
-                    {Array.from({ length: Math.ceil(totalFilteredDoctors / doctorsPerPage) }, (_, index) => (
+                    {Array.from({length: Math.ceil(totalFilteredDoctors / doctorsPerPage)}, (_, index) => (
                         <button
                             key={index + 1}
                             onClick={() => paginate(index + 1)}

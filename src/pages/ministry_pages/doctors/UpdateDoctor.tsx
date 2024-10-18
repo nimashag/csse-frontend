@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import MinistrySidebar from '../MinistrySidebar.tsx';
 import config from "../../../constants/config";
 
+const specializations = ['Cardiology', 'Dermatology', 'Neurology', 'Oncology', 'Pediatrics', 'Radiology'];
+
 const UpdateDoctor: React.FC = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,7 +32,7 @@ const UpdateDoctor: React.FC = () => {
                     setFormData({
                         name: data.name,
                         email: data.email,
-                        specialization: data.specialization || '' // Set the specialization field
+                        specialization: data.specialization || ''
                     });
                 } else {
                     throw new Error('Failed to fetch doctor data');
@@ -43,7 +45,7 @@ const UpdateDoctor: React.FC = () => {
         if (id) fetchDoctor();
     }, [id]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
@@ -69,11 +71,10 @@ const UpdateDoctor: React.FC = () => {
         } else if (name === 'specialization' && !value) {
             error = 'Specialization is required';
         }
-
         return error;
     };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
         const error = validateField(e.target.name, e.target.value);
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -140,7 +141,7 @@ const UpdateDoctor: React.FC = () => {
 
     return (
         <div className="dashboard-layout">
-            <MinistrySidebar/>
+            <MinistrySidebar />
             <main className="main-content">
                 <header className="header">
                     <div className="header-left">
@@ -178,16 +179,21 @@ const UpdateDoctor: React.FC = () => {
 
                             <div className="form-group">
                                 <label>Specialization</label>
-                                <input
-                                    type="text"
+                                <select
                                     name="specialization"
                                     value={formData.specialization}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     className={`form-input ${errors.specialization ? 'border-red-500' : ''}`}
-                                    placeholder="Enter Doctor's Specialization"
                                     required
-                                />
+                                >
+                                    <option value="">Select Specialization</option>
+                                    {specializations.map((specialization) => (
+                                        <option key={specialization} value={specialization}>
+                                            {specialization}
+                                        </option>
+                                    ))}
+                                </select>
                                 {errors.specialization && <span className="text-red-500">{errors.specialization}</span>}
                             </div>
 
@@ -212,7 +218,7 @@ const UpdateDoctor: React.FC = () => {
                                 Cancel
                             </button>
                             <button type="submit" className="btn-submit">
-                                Update
+                                Submit
                             </button>
                         </div>
                     </form>

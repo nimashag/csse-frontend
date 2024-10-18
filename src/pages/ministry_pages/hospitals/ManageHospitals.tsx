@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MinistrySidebar from '../MinistrySidebar.tsx';
-import { FaSearch } from 'react-icons/fa';
+import {FaEdit, FaFolderMinus, FaSearch} from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import config from "../../../constants/config";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import {FaUserPen} from "react-icons/fa6";
 
 interface Hospital {
     hospitalId: string;
@@ -77,6 +78,13 @@ const ManageHospitals: React.FC = () => {
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+    const formatHospitalType = (type: string): string => {
+        return type
+                .split('_') // Split by underscore
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+                .join(' '); // Join back to a single string
+    };
+
     return (
         <div className="dashboard-layout">
             <MinistrySidebar />
@@ -123,19 +131,21 @@ const ManageHospitals: React.FC = () => {
                                 <td className="border border-gray-300 px-4 py-2">{hospital.hospitalEmail}</td>
                                 <td className="border border-gray-300 px-4 py-2">{hospital.area}</td>
                                 <td className="border border-gray-300 px-4 py-2">{hospital.contactNumber}</td>
-                                <td className="border border-gray-300 px-4 py-2">{hospital.hospitalType}</td>
+                                <td className="border border-gray-300 px-4 py-2">{formatHospitalType(hospital.hospitalType)}</td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     <button
                                         onClick={() => navigate(`/update-hospital/${hospital.hospitalId}`)}
                                         className="text-blue-500 hover:underline"
+                                        title="Update Hospital"
                                     >
-                                        Update
+                                        <FaEdit size="20px"/>
                                     </button>
                                     <button
                                         onClick={() => confirmDelete(hospital.hospitalId)}
                                         className="ml-4 text-red-500 hover:underline"
+                                        title="Delete Hospital"
                                     >
-                                        Delete
+                                        <FaFolderMinus size="20px"/>
                                     </button>
                                 </td>
                             </tr>
