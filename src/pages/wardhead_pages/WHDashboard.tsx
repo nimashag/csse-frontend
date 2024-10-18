@@ -25,7 +25,7 @@ const WHDashboard :React.FC= () => {
           {/* Header Left Side */}
           <div className="header-left">
             <div className="user-info">
-              <h2 className="text-3xl font-semibold">Doctor Dashboard</h2>
+              <h2 className="text-3xl font-semibold">Ward Head Dashboard</h2>
             </div>
           </div>
 

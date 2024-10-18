@@ -112,7 +112,7 @@ const AddHospital: React.FC = () => {
                 setTimeout(() => {
                     setNotification(null);
                     navigate('/manage-hospitals');
-                }, 5000);
+                }, 3000);
             } else {
                 throw new Error('Failed to add hospital');
             }
@@ -121,7 +121,7 @@ const AddHospital: React.FC = () => {
             setNotification({ message: 'Failed to add hospital. Please try again later.', type: 'error' });
             setTimeout(() => {
                 setNotification(null);
-            }, 5000);
+            }, 3000);
         }
     };
 
