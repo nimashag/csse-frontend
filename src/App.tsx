@@ -11,6 +11,7 @@ import UpdateHospital from "./pages/ministry_pages/hospitals/UpdateHospital.tsx"
 import ManageDoctors from "./pages/ministry_pages/doctors/ManageDoctors.tsx";
 import AddDoctor from "./pages/ministry_pages/doctors/AddDoctor.tsx";
 import UpdateDoctor from "./pages/ministry_pages/doctors/UpdateDoctor.tsx";
+import DoctorLogin from "./pages/ministry_pages/doctors/DoctorLogin.tsx";
 import LabManage from "./pages/lab_tech_pages/LabManage";
 import AssignedHospital from "./pages/doctor_pages/AssignedHospital";
 import RoomAllocation from "./pages/doctor_pages/RoomAllocation";
@@ -34,6 +35,7 @@ import ViewClinic from "./pages/receptionist_pages/ViewClinic.tsx";
 import AddToClinic from "./pages/receptionist_pages/AddToClinic.tsx";
 import ViewPatient from "./pages/receptionist_pages/ViewPatient.tsx";
 import AddNewClinic from "./pages/receptionist_pages/AddNewClinic.tsx";
+import SuperAdminLogin from "@/pages/ministry_pages/SuperAdminLogin.tsx";
 import LabTechDashboard from "./components/labs/LabTechDashboard.tsx";
 
 function App() {
@@ -48,6 +50,7 @@ function App() {
 
           {/* Ministry Routes - dashboard */}
           <Route path='/ministry-dashboard' element={<MinistryDashboard/>}/>
+          <Route path="/super-admin-login" element={<SuperAdminLogin/>}/>
           {/* Ministry Routes - hospitals */}
           <Route path='/manage-hospitals' element={<ManageHospitals/>}/>
           <Route path='/add-hospital' element={<AddHospital/>}/>
@@ -56,6 +59,7 @@ function App() {
           <Route path='/manage-doctors' element={<ManageDoctors/>}/>
           <Route path='/add-doctor' element={<AddDoctor/>}/>
           <Route path="/update-doctor/:id" element={<UpdateDoctor/>}/>
+          <Route path="/doctor-login" element={<DoctorLogin/>}/>
 
           {/* Lab Tech Routes */}
           <Route path="/lab-manage" element={<LabManage />} />

@@ -50,7 +50,7 @@ const DocSidebar :React.FC= () => {
               </Link>
             </li>
             <li>
-              <Link to="">
+              <Link to="/doctor-login">
               <IoLogOutOutline /> Logout
               </Link>
             </li>
