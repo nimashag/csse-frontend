@@ -34,6 +34,7 @@ import ViewClinic from "./pages/receptionist_pages/ViewClinic.tsx";
 import AddToClinic from "./pages/receptionist_pages/AddToClinic.tsx";
 import ViewPatient from "./pages/receptionist_pages/ViewPatient.tsx";
 import AddNewClinic from "./pages/receptionist_pages/AddNewClinic.tsx";
+import LabTechDashboard from "./components/labs/LabTechDashboard.tsx";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/" element={<LoginSignup />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/labtech" element={<LabTechDashboard />} />
 
           {/* Ministry Routes - dashboard */}
           <Route path='/ministry-dashboard' element={<MinistryDashboard/>}/>

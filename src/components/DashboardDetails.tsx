@@ -1,6 +1,6 @@
 // src/components/DashboardDetails.js
 import React from "react";
-import { QRCode } from "qrcode.react";
+import {QRCodeSVG}  from "qrcode.react";
 
 const DashboardDetails = () => {
   // Retrieve profile data from localStorage
@@ -21,7 +21,7 @@ const DashboardDetails = () => {
       {/* QR Code generation */}
       <div style={{ marginTop: "20px" }}>
         <h3>Your QR Code</h3>
-        <QRCode
+        <QRCodeSVG
           value={profileDataString}
           size={200} // Adjust size as needed
           includeMargin={true}
