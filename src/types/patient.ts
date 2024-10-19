@@ -1,4 +1,4 @@
-import IAppointment from "./Appointment";
+import IAppointment from "./appointment";
 import IMedicalHistory from "./medicalHistory";
 
 export default interface IPatient{

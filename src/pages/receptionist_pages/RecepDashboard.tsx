@@ -1,14 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 import { FaBell, FaSearch } from "react-icons/fa";
-import recep1 from '../../assets/images/recep/manageclinic2.jpg'
-import recep2 from '../../assets/images/recep/newclinic.jpg'
-import recep3 from '../../assets/images/doctor/patreportimg.jpg'
-import docprof from '../../assets/images/doctor/docprof.jpg'
-import docsum from '../../assets/images/doctor/docsum.jpg'
-import RecepSidebar from './RecepSidebar';
+import recep1 from "../../assets/images/recep/manageclinic2.jpg";
+import recep2 from "../../assets/images/recep/newclinic.jpg";
+import recep3 from "../../assets/images/doctor/patreportimg.jpg";
+import docprof from "../../assets/images/doctor/docprof.jpg";
+import docsum from "../../assets/images/doctor/docsum.jpg";
+import RecepSidebar from "./RecepSidebar";
 
-const RecepDashboard :React.FC= () => {
+const RecepDashboard: React.FC = () => {
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -16,9 +16,8 @@ const RecepDashboard :React.FC= () => {
 
       {/* Main content on the screen */}
       <main className="main-content">
-
-      {/* First Part */}  
-      <header className="header">
+        {/* First Part */}
+        <header className="header">
           {/* Header Left Side */}
           <div className="header-left">
             <div className="user-info">
@@ -41,7 +40,7 @@ const RecepDashboard :React.FC= () => {
               <FaBell size={18} />
             </button>
 
-            <img  className="profile-image" alt="Recep" />
+            <img className="profile-image" alt="Recep" />
           </div>
         </header>
 
@@ -53,12 +52,11 @@ const RecepDashboard :React.FC= () => {
           <div className="flex w-full md:flex-row  items-center gap-5">
             <section className="dashboard-overview-2">
               <div className="stat-card">
-                <h3 className="text-xl font-semibold text-black">
-                    My Clinics
-                </h3>
+                <h3 className="text-xl font-semibold text-black">My Clinics</h3>
                 <img src={recep1} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2 ">
-                  Manage your clinic's details, patient records and appointment schedules.
+                  Manage your clinic's details, patient records and appointment
+                  schedules.
                 </p>
                 <Link to="/clinics">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
@@ -73,7 +71,8 @@ const RecepDashboard :React.FC= () => {
                 </h3>
                 <img src={recep2} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2">
-                  Easily set up a new clinic by entering essential details to enhance your healthcare network.
+                  Easily set up a new clinic by entering essential details to
+                  enhance your healthcare network.
                 </p>
                 <Link to="/add-clinic">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
@@ -88,11 +87,12 @@ const RecepDashboard :React.FC= () => {
                 </h3>
                 <img src={recep3} className="h-64 mt-2 mx-auto" />
                 <p className="mt-2">
-                    Generate reports on patient care, treatment outcomes, and overall health analytics.
+                  Generate reports on patient care, treatment outcomes, and
+                  overall health analytics.
                 </p>
-                <Link to="">
+                <Link to="/patients-for-appointments">
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
-                    Patient Reports
+                    Patient Appointments
                   </button>
                 </Link>
               </div>
@@ -110,7 +110,8 @@ const RecepDashboard :React.FC= () => {
                   My Profile
                 </h3>
                 <p className="mt-2 text-left">
-                    Update and manage your personal information, credentials, and preferences to ensure your profile stays current and secure.
+                  Update and manage your personal information, credentials, and
+                  preferences to ensure your profile stays current and secure.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-purple-800 transition-all duration-300">
@@ -126,7 +127,9 @@ const RecepDashboard :React.FC= () => {
                   Patient Summary
                 </h3>
                 <p className="mt-2 text-left">
-                    View a comprehensive overview of patients, appointments, and activities to stay informed and organized in delivering efficient care.
+                  View a comprehensive overview of patients, appointments, and
+                  activities to stay informed and organized in delivering
+                  efficient care.
                 </p>
                 <Link to="">
                   <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-blue-800 transition-all duration-300">
@@ -139,7 +142,7 @@ const RecepDashboard :React.FC= () => {
         </div>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default RecepDashboard
+export default RecepDashboard;

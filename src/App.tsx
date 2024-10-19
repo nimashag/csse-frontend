@@ -35,6 +35,11 @@ import AddToClinic from "./pages/receptionist_pages/AddToClinic.tsx";
 import ViewPatient from "./pages/receptionist_pages/ViewPatient.tsx";
 import AddNewClinic from "./pages/receptionist_pages/AddNewClinic.tsx";
 import LabTechDashboard from "./components/labs/LabTechDashboard.tsx";
+import PatientsForAppointments from "./pages/receptionist_pages/PatientsForAppointments.tsx";
+import CreateAppointment from "./pages/receptionist_pages/CreateAppointment.tsx";
+import AddNewPatient from "./pages/receptionist_pages/AddNewPatient.tsx";
+import ManagePatient from "./pages/receptionist_pages/ManagePatient.tsx";
+import UpdatePatient from "./pages/receptionist_pages/UpdatePatient.tsx";
 
 function App() {
   return (
@@ -74,11 +79,7 @@ function App() {
           <Route path="/all-wardroomsinfo" element={<AllWardRooms />} />
           <Route path="/all-labroomsinfo" element={<AllLabRooms />} />
           <Route path="/all-operations" element={<ManageOperations />} />
-
-
-          {/* Rusiru gonna design these */}
-          {/* take a look at the dashboard as well ma boy :) */}
-
+      
           {/* Ward Head Routes */}
           <Route path="/wh-dashboard" element={<WHDashboard />} />
           <Route path="/wh-mpatients" element={<WHManagePatients />} />
@@ -93,6 +94,13 @@ function App() {
           <Route path="/add-to-clinic/:id" element={<AddToClinic />} />
           <Route path="/patient/:id" element={<ViewPatient />} />
           <Route path="/add-clinic" element={<AddNewClinic />} />
+          {/*Rusiru please check thess, only have to do the designs :) god bless! */}
+          <Route path="/patients-for-appointments" element={<PatientsForAppointments />} />
+          <Route path="/create-appointment/:id" element={<CreateAppointment />} />
+          <Route path="/create-patient" element={<AddNewPatient />} />
+          <Route path="/manage-patients" element={<ManagePatient />} />
+          <Route path="/update-patients/:id" element={<UpdatePatient />} />
+
         </Routes>
       </Router>
     </SnackbarProvider>
