@@ -2,14 +2,20 @@ import React from 'react';
 import DocSidebar from './DocSidebar'
 import { FaBell, FaSearch } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
 import hospitaling from '../../assets/images/doctor/hospitalimg.jpg'
 import mypatimg from '../../assets/images/doctor/mypatimg.jpg'
 import patreport from '../../assets/images/doctor/patreportimg.jpg'
 import docprof from '../../assets/images/doctor/docprof.jpg'
 import docsum from '../../assets/images/doctor/docsum.jpg'
+import docprofile from '../../assets/images/doctor/docaimg.png'
 
 const DocDashboard :React.FC= () => {
+
+  const location = useLocation();
+  const doctor = location.state?.doctor;
+  console.log(`logged in doctor: ${JSON.stringify(doctor)}`);
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
@@ -42,7 +48,7 @@ const DocDashboard :React.FC= () => {
               <FaBell size={18} />
             </button>
 
-            <img  className="profile-image" alt="Doctor" />
+            <img src={docprofile} className="profile-image" alt="Doctor" />
           </div>
         </header>
 
@@ -61,8 +67,8 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2 ">
                     Manage hospital information, add or update hospital details, and track the facilities available.
                 </p>
-                <Link to="">
-                  <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
+                <Link to={`/asigned-hos`} state={{ doctor }}>
+                  <button className="bg-black font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800 transition-all duration-300">
                     View Hospitals
                   </button>
                 </Link>
@@ -76,9 +82,9 @@ const DocDashboard :React.FC= () => {
                 <p className="mt-2">
                     Access patient profiles, view medical histories, and track ongoing treatments and progress.
                 </p>
-                <Link to="">
+                <Link to={`/asigned-hos`} state={{ doctor }}>
                   <button className="bg-black  font-semibold text-white mt-5 px-10 py-2 rounded hover:bg-green-800  transition-all duration-300">
-                    Check Reports
+                    Appointments
                   </button>
                 </Link>
               </div>
