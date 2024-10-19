@@ -24,6 +24,7 @@ import ManageOperations from './pages/healthcare_manager_pages/ManageOperations.
 import WHDashboard from './pages/wardhead_pages/WHDashboard.tsx'
 import WHManagePatients from './pages/wardhead_pages/WHManagePatients.tsx'
 import RecepDashboard from './pages/receptionist_pages/RecepDashboard.tsx'
+import LabTechDashboard from './components/labs/LabTechDashboard.tsx'
 
 function App() {
 
@@ -66,7 +67,10 @@ function App() {
         <Route path='/wh-mpatients' element={<WHManagePatients/>} />
 
         {/* Ward Head Routes */}
+        
         <Route path='/recep-dashboard' element={<RecepDashboard />} />
+        <Route path='/lab-dashboard' element={<LabTechDashboard />} />
+        
 
       </Routes>
     </Router>

@@ -51,6 +51,7 @@ const LoginSignup: React.FC = () => {
         // Send the data to your Spring Boot backend for MongoDB storage
         try {
           const response = await axios.post('http://localhost:8080/api/patients', patientProfile);
+          console.log(patientProfile)
           toast.success("Patient created successfully in MongoDB!");
           console.log(response.data); // Log the response from your backend
         } catch (error) {
@@ -73,16 +74,6 @@ const LoginSignup: React.FC = () => {
           // Set the existing profile to Zustand store
           setUserProfile(userProfileData);
         }
-
-        // Send the login data to your backend for MongoDB operations
-        // try {
-        //   const response = await axios.post('http://localhost:8080/api/patients/login', { email: userEmail });
-        //   toast.success("Logged in and data fetched from MongoDB!");
-        //   console.log(response.data); // You can store this data in Zustand if needed
-        // } catch (error) {
-        //   toast.error("Failed to retrieve data from MongoDB");
-        //   console.error(error);
-        // }
 
         // Successful login flow
         toast.success("Logged in successfully!");
@@ -228,47 +219,29 @@ const LoginSignup: React.FC = () => {
             </button>
 
             {/* Google Sign-In */}
-            <div className="flex items-center justify-center space-x-2 mt-4">
-              <div className="border-t border-gray-300 w-1/3"></div>
-              <span className="text-gray-500 text-sm">or continue with</span>
-              <div className="border-t border-gray-300 w-1/3"></div>
-            </div>
-            <div className="flex justify-center space-x-4 mt-4">
+            <div className="flex items-center justify-center space-x-2 mt-6">
               <button
-                className="bg-gray-100 p-3 rounded-full hover:bg-gray-200"
+                className="w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300"
                 onClick={handleGoogleAuth}
               >
-                <img src="/google-icon.svg" alt="Google" className="w-6 h-6" />
+                Sign in with Google
               </button>
             </div>
 
-            {/* Toggle between Sign Up and Sign In */}
-            <p className="mt-6 text-center text-gray-600">
-              {isSignup ? (
-                <>
-                  Already have an account?{" "}
-                  <span
-                    className="text-indigo-500 hover:underline cursor-pointer"
-                    onClick={() => setIsSignup(false)}
-                  >
-                    Sign In
-                  </span>
-                </>
-              ) : (
-                <>
-                  Don’t have an account?{" "}
-                  <span
-                    className="text-indigo-500 hover:underline cursor-pointer"
-                    onClick={() => setIsSignup(true)}
-                  >
-                    Register here
-                  </span>
-                </>
-              )}
-            </p>
+            {/* Toggle between Signup/Login */}
+            <div className="text-center mt-4">
+              <button
+                className="text-blue-500 hover:underline"
+                onClick={() => setIsSignup(!isSignup)}
+              >
+                {isSignup ? "Already have an account? Login" : "New here? Sign Up"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Toast notification container */}
       <ToastContainer />
     </div>
   );
