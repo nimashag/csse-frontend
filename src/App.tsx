@@ -42,6 +42,9 @@ import CreateAppointment from "./pages/receptionist_pages/CreateAppointment.tsx"
 import AddNewPatient from "./pages/receptionist_pages/AddNewPatient.tsx";
 import ManagePatient from "./pages/receptionist_pages/ManagePatient.tsx";
 import UpdatePatient from "./pages/receptionist_pages/UpdatePatient.tsx";
+import SingleAppointmentView from "./pages/doctor_pages/SingleAppointmentView.tsx";
+import ReportPatients from "./pages/doctor_pages/ReportPatients.tsx";
+import DoctorProfile from "./pages/doctor_pages/DoctorProfile.tsx";
 
 function App() {
   return (
@@ -74,8 +77,11 @@ function App() {
           <Route path="/asigned-hos" element={<AssignedHospital />} />
           <Route path="/room-allocation" element={<RoomAllocation />} />
           <Route path="/patient-appointment" element={<PatientAppointment />} />
+          <Route path="/single-appointment" element={<SingleAppointmentView />} />
+          <Route path='/patient-report' element={<ReportPatients />} />
+          <Route path='/doct-profile' element={<DoctorProfile />} />
 
-          {/* Healthcare Manager Routes */}
+         {/* Healthcare Manager Routes */}
           <Route path="/hcm-dashboard" element={<HMDashboard />} />
           <Route path="/all-wardinfo" element={<AllWard />} />
           <Route path="/add-labinfo" element={<AllLabTech />} />
@@ -98,6 +104,7 @@ function App() {
           <Route path="/add-to-clinic/:id" element={<AddToClinic />} />
           <Route path="/patient/:id" element={<ViewPatient />} />
           <Route path="/add-clinic" element={<AddNewClinic />} />
+
           {/*Rusiru please check thess, only have to do the designs :) god bless! */}
           <Route path="/patients-for-appointments" element={<PatientsForAppointments />} />
           <Route path="/create-appointment/:id" element={<CreateAppointment />} />
