@@ -19,18 +19,18 @@ const MinistrySidebar: React.FC = () => {
                     <ul>
                         <div className='mt-10'>
                             <li>
-                                <Link to="/dashboard">
+                                <Link to="/ministry-dashboard">
                                     <RiHome3Line/> Dashboard
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/manage-hospitals">
-                                    <FaHospital/> All Hospitals
+                                    <FaHospital/> Manage Hospitals
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/manage-doctors">
-                                    <FaUserDoctor/> All Doctors
+                                    <FaUserDoctor/> Manage Doctors
                                 </Link>
                             </li>
                         </div>

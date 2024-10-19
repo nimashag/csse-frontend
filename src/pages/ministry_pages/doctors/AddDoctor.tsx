@@ -3,23 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import MinistrySidebar from '../MinistrySidebar.tsx';
 import config from "../../../constants/config";
 
+const specializations = ['Cardiology', 'Dermatology', 'Neurology', 'Oncology', 'Pediatrics', 'Radiology']; // Add your specializations here
+
 const AddDoctor: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        specialization: ''
     });
 
     const [errors, setErrors] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        specialization: ''
     });
 
     const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
@@ -44,12 +48,14 @@ const AddDoctor: React.FC = () => {
             }
         } else if (name === 'password' && !value) {
             error = 'Password is required';
+        } else if (name === 'specialization' && !value) {
+            error = 'Specialization is required';
         }
 
         return error;
     };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
         const error = validateField(e.target.name, e.target.value);
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -77,7 +83,7 @@ const AddDoctor: React.FC = () => {
         if (!valid) return; // Prevent submission if validation fails
 
         try {
-            const response = await fetch(`${config.backend_url}/api/users/`, {
+            const response = await fetch(`${config.backend_url}/api/doctors/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,6 +93,7 @@ const AddDoctor: React.FC = () => {
                     email: formData.email,
                     password: formData.password,
                     userType: 'DOCTOR',
+                    specialization: formData.specialization,
                 }),
             });
 
@@ -97,7 +104,7 @@ const AddDoctor: React.FC = () => {
                 setTimeout(() => {
                     setNotification(null);
                     navigate('/manage-doctors');
-                }, 5000);
+                }, 3000);
             } else {
                 throw new Error('Failed to add doctor');
             }
@@ -106,7 +113,7 @@ const AddDoctor: React.FC = () => {
             setNotification({ message: 'Failed to add doctor. Please try again later.', type: 'error' });
             setTimeout(() => {
                 setNotification(null);
-            }, 5000);
+            }, 3000);
         }
     };
 
@@ -150,6 +157,26 @@ const AddDoctor: React.FC = () => {
                                     required
                                 />
                                 {errors.name && <span className="text-red-500">{errors.name}</span>}
+                            </div>
+
+                            <div className="form-group">
+                                <label>Specialization</label>
+                                <select
+                                    name="specialization"
+                                    value={formData.specialization}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-input ${errors.specialization ? 'border-red-500' : ''}`}
+                                    required
+                                >
+                                    <option value="">Select Specialization</option>
+                                    {specializations.map((specialization) => (
+                                        <option key={specialization} value={specialization}>
+                                            {specialization}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.specialization && <span className="text-red-500">{errors.specialization}</span>}
                             </div>
 
                             <div className="form-group">

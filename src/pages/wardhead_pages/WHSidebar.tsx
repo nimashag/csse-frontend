@@ -24,13 +24,13 @@ const WHSidebar :React.FC= () => {
               </Link>
             </li>
             <li>
-              <Link to="/wh-mpatients">
-              <FaUserDoctor /> Manage Patients
+              <Link to="/wards">
+              <FaUserDoctor /> Manage Ward Rooms
               </Link>
             </li>
             <li>
-              <Link to="">
-              <RiHospitalLine  /> Manage Ward Rooms
+              <Link to="/wards/create">
+              <RiHospitalLine  /> Add Ward Rooms
               </Link>
             </li>
             </div>

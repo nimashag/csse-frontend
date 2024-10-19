@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import MinistrySidebar from '../MinistrySidebar.tsx';
-import { FaSearch } from 'react-icons/fa';
+import {FaEdit, FaFolderMinus, FaSearch} from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import config from "../../../constants/config";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import {FaUserPen} from "react-icons/fa6";
 
 interface Hospital {
     hospitalId: string;
@@ -19,8 +20,9 @@ const ManageHospitals: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [hospitalsPerPage] = useState(10);
     const [totalHospitals, setTotalHospitals] = useState(0);
-    const [deleteHospitalId, setDeleteHospitalId] = useState<string | null>(null); // State to store hospital ID to delete
-    const [showDeleteModal, setShowDeleteModal] = useState(false); // State to show/hide the modal
+    const [deleteHospitalId, setDeleteHospitalId] = useState<string | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState<string>(''); // New state for search query
 
     const navigate = useNavigate();
 
@@ -35,8 +37,8 @@ const ManageHospitals: React.FC = () => {
     }, []);
 
     const confirmDelete = (hospitalId: string) => {
-        setDeleteHospitalId(hospitalId);  // Set the hospital ID for deletion
-        setShowDeleteModal(true);  // Show the confirmation modal
+        setDeleteHospitalId(hospitalId);
+        setShowDeleteModal(true);
     };
 
     const handleDelete = async () => {
@@ -47,7 +49,7 @@ const ManageHospitals: React.FC = () => {
                 });
                 if (response.ok) {
                     setHospitals(hospitals.filter(hospital => hospital.hospitalId !== deleteHospitalId));
-                    setShowDeleteModal(false);  // Close the modal after deletion
+                    setShowDeleteModal(false);
                 } else {
                     alert('Failed to delete hospital.');
                 }
@@ -58,14 +60,30 @@ const ManageHospitals: React.FC = () => {
     };
 
     const handleCloseModal = () => {
-        setShowDeleteModal(false);  // Close modal without deleting
+        setShowDeleteModal(false);
     };
 
     const indexOfLastHospital = currentPage * hospitalsPerPage;
     const indexOfFirstHospital = indexOfLastHospital - hospitalsPerPage;
-    const currentHospitals = hospitals.slice(indexOfFirstHospital, indexOfLastHospital);
+
+    // Filter hospitals based on the search query
+    const filteredHospitals = hospitals.filter(hospital =>
+        hospital.hospitalName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        hospital.area.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        hospital.hospitalType.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const currentHospitals = filteredHospitals.slice(indexOfFirstHospital, indexOfLastHospital);
+    const totalFilteredHospitals = filteredHospitals.length; // Update total hospitals count based on search
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    const formatHospitalType = (type: string): string => {
+        return type
+                .split('_') // Split by underscore
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+                .join(' '); // Join back to a single string
+    };
 
     return (
         <div className="dashboard-layout">
@@ -81,6 +99,8 @@ const ManageHospitals: React.FC = () => {
                         <input
                             type="text"
                             placeholder="Search..."
+                            value={searchQuery} // Bind the input value to the searchQuery state
+                            onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
                             className="h-10 pl-10 pr-10 rounded-full shadow-sm w-full border border-gray-300"
                         />
                         <div className="absolute mt-0.7 ml-4 text-gray-500">
@@ -111,19 +131,21 @@ const ManageHospitals: React.FC = () => {
                                 <td className="border border-gray-300 px-4 py-2">{hospital.hospitalEmail}</td>
                                 <td className="border border-gray-300 px-4 py-2">{hospital.area}</td>
                                 <td className="border border-gray-300 px-4 py-2">{hospital.contactNumber}</td>
-                                <td className="border border-gray-300 px-4 py-2">{hospital.hospitalType}</td>
+                                <td className="border border-gray-300 px-4 py-2">{formatHospitalType(hospital.hospitalType)}</td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     <button
                                         onClick={() => navigate(`/update-hospital/${hospital.hospitalId}`)}
                                         className="text-blue-500 hover:underline"
+                                        title="Update Hospital"
                                     >
-                                        Update
+                                        <FaEdit size="20px"/>
                                     </button>
                                     <button
                                         onClick={() => confirmDelete(hospital.hospitalId)}
                                         className="ml-4 text-red-500 hover:underline"
+                                        title="Delete Hospital"
                                     >
-                                        Delete
+                                        <FaFolderMinus size="20px"/>
                                     </button>
                                 </td>
                             </tr>
@@ -133,7 +155,7 @@ const ManageHospitals: React.FC = () => {
                 </div>
 
                 <div className="mt-4 flex justify-center">
-                    {Array.from({ length: Math.ceil(totalHospitals / hospitalsPerPage) }, (_, index) => (
+                    {Array.from({ length: Math.ceil(totalFilteredHospitals / hospitalsPerPage) }, (_, index) => (
                         <button
                             key={index + 1}
                             onClick={() => paginate(index + 1)}

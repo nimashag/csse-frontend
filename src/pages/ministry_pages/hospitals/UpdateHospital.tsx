@@ -139,7 +139,7 @@ const UpdateHospital: React.FC = () => {
                 setTimeout(() => {
                     setNotification(null);
                     navigate('/manage-hospitals');
-                }, 5000);
+                }, 3000);
             } else {
                 throw new Error('Failed to update hospital');
             }
@@ -148,7 +148,7 @@ const UpdateHospital: React.FC = () => {
             setNotification({ message: 'Failed to update hospital. Please try again later.', type: 'error' });
             setTimeout(() => {
                 setNotification(null);
-            }, 5000);
+            }, 3000);
         }
     };
 
