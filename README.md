@@ -1,5 +1,11 @@
-## connection string - mongodb+srv://root:root@cluster0.d9ctt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+# CSSE Frontend
 
+## How to start development
+
+```
+npm i --force
+npm run dev
+```
 
 # React + TypeScript + Vite
 
